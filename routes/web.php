@@ -3,7 +3,9 @@
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect('login');
+});
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
@@ -14,6 +16,6 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 
-    Route::get('dashboard', Dashboard::class)->name('dashboard');
+Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
