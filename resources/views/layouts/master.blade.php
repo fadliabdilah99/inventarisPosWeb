@@ -6,7 +6,13 @@
     <title>{{ $title ?? 'SuperMarket' }}</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+        #camera video {
+            width: 100%;
+            max-width: 640px;
+        }
+    </style>
     <!-- Fonts and icons -->
     <script src="assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -36,6 +42,11 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="assets/css/demo.css" />
+
+
+    @livewireStyles
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
 
 
 </head>
@@ -69,7 +80,7 @@
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
 
-                        <li class="nav-item" >
+                        <li class="nav-item">
                             <a href="{{ route('dashboard') }} " wire:navigate>
                                 <i class="fas fa-desktop"></i>
                                 <p>Dashboard</p>
@@ -486,6 +497,11 @@
         </div>
         <!-- End Custom template -->
     </div>
+
+    @livewireScripts
+
+
+
     <!--   Core JS Files   -->
     <script src="assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="assets/js/core/popper.min.js"></script>
