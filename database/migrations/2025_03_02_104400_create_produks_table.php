@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('produk');
             $table->string('margin');
             $table->string('discount');
-            $table->string('stok');
+            $table->string('stok')->nullable();
             $table->timestamps();
         });
     }

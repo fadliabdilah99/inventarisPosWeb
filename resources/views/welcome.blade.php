@@ -1,321 +1,230 @@
-@extends('layouts.layout')
-@section('title', 'Manajemen Produk')
-
-@section('content')
-
-    <div class="page-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <button class="btn btn-primary" id="createProductButton">
-                <i class="fa fa-plus"></i> Tambah User
-            </button>
-        </div>
-
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        <div class="card">
-            <h5 class="card-header text-md-start text-center">Tabel User</h5>
-            <div class="card-datatable">
-                {{-- <div class="card-datatable overflow-auto"> --}}
-                <table class="table table-bordered dt-scrollableTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama User</th>
-                            <th>Email</th>
-                            <th>Password</th>
-                            <th>Role</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->email }}</td>
-                                <td>{{ $item->password }}</td>
-                                <td>{{ $item->role }}</td>
-                                <td>
-                                    <button class="btn btn-warning edit-button"
-                                        onclick="test('{{ $item->id }}', '{{ $item->name }}', '{{ $item->email }}', '{{ $item->password }}', '{{ $item->role }}')"
-                                        data-bs-toggle="modal" data-bs-target="#editModal">
-                                        <i class="bx bx-edit"></i>
-                                    </button>
-
-
-                                    <button class="btn btn-danger delete-button" data-id="{{ $item->id }}"
-                                        data-nama="{{ $item->name }}">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-
-                                    <form id="delete-form-{{ $item->id }}"
-                                        action="{{ route('users.destroy', $item->id) }}" method="POST"
-                                        style="display:none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+<div class="row">
+    <div class="page-header">
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="{{ route('dashboard') }}" wire:navigate>
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('barang-masuk') }}" wire:navigate>Barang Masuk</a>
+            </li>
+        </ul>
     </div>
+    <div class="col-md-4">
+        <button id="stopScan" style="display: none">Tutup</button>
+        <video id="preview"
+            style="width: 100%; height: auto; border: 1px solid black; border-radius: 10px; display: none;"></video>
+        <form wire:submit.prevent="scanDetected" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Name</label>
+                        <input readonly id="kode_barang" type="text" class="form-control" placeholder="fill name"
+                            wire:model="kode">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Harga Modal</label>
+                        <input id="modal" type="number" class="form-control" placeholder="000" wire:model="harga">
+                    </div>
+                    <div class="form-group form-group-default">
+                        <label>QTY</label>
+                        <input id="modal" type="number" class="form-control" placeholder="000" wire:model="qty">
+                    </div>
 
-@endsection
-
-{{-- modal tambah --}}
-<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Tambah User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="productForm" method="POST">
-                    @csrf
-                    <input type="hidden" id="method" name="_method" value="POST">
+            <button class="btn btn-success" id="startScan" type="button">Success</button>
+        </form>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nama User</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const video = document.getElementById('preview');
+                const startButton = document.getElementById('startScan');
+                const stopButton = document.getElementById('stopScan');
+                const form = document.querySelector('form');
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="role" class="form-label">role</label>
-                        <select name="role" class="form-control" required>
-                            <option value="admin">Admin</option>
-                            <option value="kasir">Kasir</option>
-                            <option value="gudang">Gudang</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-success" id="submitButton">Simpan</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal Edit Produk -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nama User</label>
-                        <input type="text" class="form-control" id="name-edit" name="name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email-edit" name="email" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">password</label>
-                        <input type="password" class="form-control" id="password-edit" name="password" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="role" class="form-label">role</label>
-                        <select name="role" class="form-control" id="role-edit" required>
-                            <option value="admin">Admin</option>
-                            <option value="kasir">Kasir</option>
-                            <option value="gudang">Gudang</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-success">Update</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@push('script')
-    <script>
-        $(document).ready(function() {
-            $('.table').DataTable();
-        });
-
-
-        function test(id, name, email, password, role) {
-            document.getElementById('name-edit').value = name;
-            document.getElementById('email-edit').value = email;
-            document.getElementById('password-edit').value = password;
-            document.getElementById('role-edit').value = role;
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- JavaScript -->
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function(e) {
-            let a = document.querySelector(".dt-scrollableTable");
-            a &&
-                new DataTable(a, {
-                    columnDefs: [{
-                        targets: -2,
-                        render: function(e, t, a, s) {
-                            var a = a.status,
-                                r = {
-                                    1: {
-                                        title: "Current",
-                                        class: "bg-label-primary",
-                                    },
-                                    2: {
-                                        title: "Professional",
-                                        class: "bg-label-success",
-                                    },
-                                    3: {
-                                        title: "Rejected",
-                                        class: "bg-label-danger",
-                                    },
-                                    4: {
-                                        title: "Resigned",
-                                        class: "bg-label-warning",
-                                    },
-                                    5: {
-                                        title: "Applied",
-                                        class: "bg-label-info"
-                                    },
-                                };
-                            return void 0 === r[a] ?
-                                e :
-                                `
-                        <span class="badge ${r[a].class}">
-                            ${r[a].title}
-                        </span>
-                        `;
-                        },
-                    }, ],
-                    // scrollY: "300px",
-                    scrollX: !0,
-                    layout: {
-                        topStart: {
-                            rowClass: "row mx-3 my-0 justify-content-between",
-                            features: [{
-                                pageLength: {
-                                    menu: [7, 10, 25, 50, 100],
-                                    text: "Show_MENU_entries",
-                                },
-                            }, ],
-                        },
-                        topEnd: {
-                            search: {
-                                placeholder: ""
-                            }
-                        },
-                        bottomStart: {
-                            rowClass: "row mx-3 justify-content-between",
-                            features: ["info"],
-                        },
-                        bottomEnd: {
-                            paging: {
-                                firstLast: !1
-                            }
-                        },
-                    },
-                    language: {
-                        paginate: {
-                            next: '<i class="icon-base bx bx-chevron-right scaleX-n1-rtl icon-sm"></i>',
-                            previous: '<i class="icon-base bx bx-chevron-left scaleX-n1-rtl icon-sm"></i>',
-                        },
-                    },
-                    initComplete: function(e, t) {
-                        a.querySelector("tbody tr:first-child").classList.add(
-                            "border-top-0"
-                        );
-                    },
+                let scanner = new Instascan.Scanner({
+                    video: video
                 });
 
-        });
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            let productModal = new bootstrap.Modal(document.getElementById('productModal'));
-
-            // Event untuk Tambah Supplier
-            document.getElementById('createProductButton').addEventListener('click', function() {
-                let modal = new bootstrap.Modal(document.getElementById('productModal'));
-                modal.show();
-            });
-
-            // Event untuk Edit User
-            document.querySelectorAll('.edit-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    let id = this.getAttribute('data-id');
-                    let nama = this.getAttribute('data-nama');
-                    let password = this.getAttribute('data-password');
-                    let email = this.getAttribute('data-email');
-                    let role = this.getAttribute('data-role');
-
-                    document.getElementById('modalTitle').innerText = "Edit User";
-                    document.getElementById('productForm').setAttribute('action',
-                        {{ url('users.update') }} / $ {
-                            id
-                        });
-                    document.getElementById('method').value = "PUT";
-                    document.getElementById('submitButton').innerText = "Update";
-
-                    document.getElementById('name-edit').value = nama;
-                    document.getElementById('email-edit').value = email;
-                    document.getElementById('password-edit').value = password;
-                    document.getElementById('role-edit').value = role;
-
-                    productModal.show();
-                });
-            });
-
-            // Event untuk Hapus User
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    let id = this.getAttribute('data-id');
-                    let nama = this.getAttribute('data-nama');
-
-                    Swal.fire({
-                        title: "Apakah Anda yakin?",
-                        text: User "${nama}"
-                        akan dihapus secara permanen!,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#d33",
-                        cancelButtonColor: "#3085d6",
-                        confirmButtonText: "Ya, hapus!",
-                        cancelButtonText: "Batal"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById(delete - form - $ {
-                                id
-                            }).submit();
+                startButton.addEventListener('click', function() {
+                    Instascan.Camera.getCameras().then(function(cameras) {
+                        if (cameras.length > 0) {
+                            scanner.start(cameras[0]);
+                            video.style.display = 'block';
+                            startButton.style.display = 'none';
+                            stopButton.style.display = 'inline';
+                        } else {
+                            console.error('No cameras found.');
                         }
+                    }).catch(function(e) {
+                        console.error(e);
                     });
                 });
+
+                stopButton.addEventListener('click', function() {
+                    scanner.stop();
+                    video.style.display = 'none';
+                    startButton.style.display = 'inline';
+                    stopButton.style.display = 'none';
+                });
+
+                scanner.addListener('scan', function(content) {
+                    console.log(content);
+                    document.getElementById('kode_barang').value = content;
+                    @this.set('kode', content);
+                    @this.call('scanDetected');
+                });
             });
+        </script>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <h4 class="card-title">Kategori</h4>
+                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                        data-bs-target="#addRowModal">
+                        <i class="fa fa-plus"></i>
+                        Tambah Kategori
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Modal -->
+                <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title">
+                                    <span class="fw-mediumbold">Tambah Kategori</span>
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="small">
+                                    Tambahkan Kategori Produk
+                                </p>
+                                @if (session()->has('message'))
+                                    <div class="alert alert-success">{{ session('message') }}</div>
+                                @endif
+                                <form wire:submit.prevent="store">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group form-group-default">
+                                                <label>kode</label>
+                                                <input id="addName" type="text" class="form-control"
+                                                    placeholder="Kode" wire:model="kategori" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="submit" id="addRowButton" class="btn btn-primary">
+                                            Add
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="add-row" class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th style="width: 10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td>testing</td>
+                                <td>
+                                    <div class="form-button-action">
+                                        <button type="button" data-bs-toggle="tooltip" title=""
+                                            class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button type="button" data-bs-toggle="tooltip" title=""
+                                            class="btn btn-link btn-danger" data-original-title="Remove">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (session()->has('message'))
+        <div class="alert alert-success">{{ session('message') }}</div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    @if ($barang)
+        <table class="table mt-3">
+            <tr>
+                <th>Nama Barang</th>
+                <td>{{ $barang->nama_barang }}</td>
+            </tr>
+            <tr>
+                <th>Kode Barang</th>
+                <td>{{ $barang->kode_barang }}</td>
+            </tr>
+            <tr>
+                <th>Harga</th>
+                <td>{{ number_format($barang->harga, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <th>Stok</th>
+                <td>{{ $barang->stok }}</td>
+            </tr>
+        </table>
+    @endif
+</div>
+
+@push('scripts')
+    {{-- //   <!-- Datatables --> --}}
+    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script>
+        $("#add-row").DataTable({
+            pageLength: 5,
+        });
+
+        var action =
+            '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+        $("#addRowButton").click(function() {
+            $("#add-row")
+                .dataTable()
+                .fnAddData([
+                    $("#addName").val(),
+                    action,
+                ]);
+            $("#addRowModal").modal("hide");
         });
     </script>
 @endpush

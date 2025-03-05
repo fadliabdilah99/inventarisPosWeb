@@ -1,10 +1,28 @@
 <div>
+
+    <div class="page-header">
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="{{ route('dashboard') }}" wire:navigate>
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('kategori') }}" wire:navigate>Kategori</a>
+            </li>
+        </ul>
+    </div>
+
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">Kategori</h4>
-                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                        data-bs-target="#addRowModal">
                         <i class="fa fa-plus"></i>
                         Tambah Kategori
                     </button>

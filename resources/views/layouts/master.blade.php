@@ -46,7 +46,7 @@
 
     @livewireStyles
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </head>
@@ -91,6 +91,20 @@
                             <a href="{{ route('kategori') }}" wire:navigate>
                                 <i class="fas fa-desktop"></i>
                                 <p>Kategori</p>
+                                {{-- <span class="badge badge-success">4</span> --}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('add-produk') }}" wire:navigate>
+                                <i class="fas fa-desktop"></i>
+                                <p>Tambahkan Produk</p>
+                                {{-- <span class="badge badge-success">4</span> --}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('barang-masuk') }}" wire:navigate>
+                                <i class="fas fa-desktop"></i>
+                                <p>Barang Masuk</p>
                                 {{-- <span class="badge badge-success">4</span> --}}
                             </a>
                         </li>
@@ -566,6 +580,29 @@
             fillColor: "rgba(255, 165, 52, .14)",
         });
     </script>
+
+
+    @if (session()->has('success'))
+        <script>
+            swal({
+                title: "Selamat!",
+                text: "{{ session('success') }}",
+                icon: "success",
+                button: "Ok",
+            });
+        </script>
+    @endif
+
+    @if (session()->has('error'))
+        <script>
+            swal({
+                title: "Kesalahan!",
+                text: "{{ session('error') }}",
+                icon: "error",
+                button: "Ok",
+            });
+        </script>
+    @endif
 
     @stack('scripts')
 </body>

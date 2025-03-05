@@ -1,15 +1,54 @@
 <div class="row">
+    <div class="page-header">
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="{{ route('dashboard') }}" wire:navigate>
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('barang-masuk') }}" wire:navigate>Barang Masuk</a>
+            </li>
+        </ul>
+    </div>
     <div class="col-md-4">
-        <button id="startScan">Scan</button>
-        <button id="stopScan" style="display: none">Tutup</button>
+        <button id="stopScan" class="btn btn-danger" style="display: none">Tutup</button>
         <video id="preview"
             style="width: 100%; height: auto; border: 1px solid black; border-radius: 10px; display: none;"></video>
+        <form wire:submit.prevent="scanDetected" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Name</label>
+                        <input readonly id="kode_barang" type="text" class="form-control" placeholder="fill name"
+                            wire:model="kode">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Harga Modal</label>
+                        <input id="modal" type="number" class="form-control" placeholder="000" wire:model="harga">
+                    </div>
+                    <div class="form-group form-group-default">
+                        <label>QTY</label>
+                        <input id="modal" type="number" class="form-control" placeholder="000" wire:model="qty">
+                    </div>
+
+                </div>
+            </div>
+            <button class="btn btn-success" id="startScan" type="button">Success</button>
+        </form>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const video = document.getElementById('preview');
                 const startButton = document.getElementById('startScan');
                 const stopButton = document.getElementById('stopScan');
+                const form = document.querySelector('form');
 
                 let scanner = new Instascan.Scanner({
                     video: video
@@ -38,8 +77,10 @@
                 });
 
                 scanner.addListener('scan', function(content) {
-                    alert(content);
                     console.log(content);
+                    document.getElementById('kode_barang').value = content;
+                    @this.set('kode', content);
+                    @this.call('scanDetected');
                 });
             });
         </script>
@@ -81,9 +122,9 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group form-group-default">
-                                                <label>Name</label>
+                                                <label>kode</label>
                                                 <input id="addName" type="text" class="form-control"
-                                                    placeholder="fill name" wire:model="kategori" />
+                                                    placeholder="Kode" wire:model="kategori" />
                                             </div>
                                         </div>
                                     </div>

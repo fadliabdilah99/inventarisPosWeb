@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class produk extends Model
 {
-    //
+    protected $guarded = [];
+
+    public function kategori()
+    {
+        return $this->belongsTo(kategori::class);
+    }
+
+    public function barang_masuk()
+    {
+        return $this->hasMany(barang_masuk::class);
+    }
 }
