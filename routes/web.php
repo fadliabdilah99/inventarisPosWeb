@@ -60,4 +60,4 @@ Route::get('kategori', Kategori::class)->name('kategori');
 Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
 
 // daftarkan barang
-Route::get('add-produk', AddProduk::class)->name('add-produk');
+Route::get('produk', AddProduk::class)->name('produk');

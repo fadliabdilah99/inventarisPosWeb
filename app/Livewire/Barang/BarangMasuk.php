@@ -33,8 +33,9 @@ class BarangMasuk extends Component
             $data['kode'] = $this->kode;
             return redirect()->route('add-produk')->with('error', 'Produk tidak ditemukan, silahkan masukan data terlebih dahulu')->with($data);
         }
-        Log::info($produk);
-        Log::info('ini' . $produk->id);
+        $produk->update([
+            'stok' => $produk->stok + $this->qty
+        ]);
         if ($produk != null) {
             barang_masuk::create([
                 'produk_id' => $produk->id,

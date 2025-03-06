@@ -95,9 +95,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('add-produk') }}" wire:navigate>
+                            <a href="{{ route('produk') }}" wire:navigate>
                                 <i class="fas fa-desktop"></i>
-                                <p>Tambahkan Produk</p>
+                                <p>Produk</p>
                                 {{-- <span class="badge badge-success">4</span> --}}
                             </a>
                         </li>
