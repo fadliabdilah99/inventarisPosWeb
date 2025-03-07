@@ -42,7 +42,7 @@
                                     <select class="form-select" wire:model="kat">
                                         <option value="" selected>Pilih Kategori</option>
                                         @foreach ($kategoris as $kategori)
-                                            <option value="{{ $kategori->id }}">{{ $kategori->id }}</option>
+                                            <option value="{{ $kategori->id }}">{{ $kategori->kategori }}</option>
                                         @endforeach
                                     </select>
                                 </div>

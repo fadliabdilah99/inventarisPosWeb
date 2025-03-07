@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Barang;
 
 use App\Models\kategori;
 use App\Models\produk;
@@ -64,6 +64,6 @@ class AddProduk extends Component
     {
         $data['kategoris'] = kategori::all();
         $data['produks'] = produk::all();
-        return view('livewire.add-produk')->with($data);
+        return view('livewire.barang.add-produk')->with($data);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Livewire\AddProduk;
+use App\Livewire\Barang\AddProduk;
 use App\Livewire\Barang\BarangMasuk;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;

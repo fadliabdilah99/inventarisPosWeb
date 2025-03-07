@@ -15,8 +15,9 @@ class BarangMasuk extends Component
 
     #[Title('barang masuk')]
 
-    public $kode, $qty, $harga;
+    public $kode, $qty, $harga, $expired;
     public $barang;
+    public $history;
 
 
     protected $rules = [
@@ -24,14 +25,15 @@ class BarangMasuk extends Component
         'qty' => 'required',
         'harga' => 'required',
     ];
+    
 
     public function scanDetected()
     {
         $this->validate();
-        $produk = produk::where('id', $this->kode)->with('barang_masuk')->first();
+        $produk = produk::where('kode', $this->kode)->with('barang_masuk')->first();
         if ($produk == null) {
             $data['kode'] = $this->kode;
-            return redirect()->route('add-produk')->with('error', 'Produk tidak ditemukan, silahkan masukan data terlebih dahulu')->with($data);
+            return redirect()->route('produk')->with('error', 'Produk tidak ditemukan, silahkan masukan data terlebih dahulu')->with($data);
         }
         $produk->update([
             'stok' => $produk->stok + $this->qty
@@ -42,6 +44,8 @@ class BarangMasuk extends Component
                 'tgl_masuk' => date('Y-m-d'),
                 'harga_modal' => $this->harga,
                 'qty' => $this->qty,
+                'stok' => $this->qty,
+                'expired' => $this->expired,
             ]);
             return redirect('barang-masuk')->with('success', 'Produk berhasil ditambahkan');
         } else {
@@ -53,6 +57,8 @@ class BarangMasuk extends Component
 
     public function render()
     {
-        return view('livewire.barang.barang-masuk');
+        $this->history = barang_masuk::with('produk')->get();
+
+        return view('livewire.barang.barang-masuk')->with('listBarang', $this->history);
     }
 }
