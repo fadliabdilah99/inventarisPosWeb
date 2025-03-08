@@ -35,9 +35,6 @@ class BarangMasuk extends Component
             $data['kode'] = $this->kode;
             return redirect()->route('produk')->with('error', 'Produk tidak ditemukan, silahkan masukan data terlebih dahulu')->with($data);
         }
-        $produk->update([
-            'stok' => $produk->stok + $this->qty
-        ]);
         if ($produk != null) {
             barang_masuk::create([
                 'produk_id' => $produk->id,
@@ -58,7 +55,6 @@ class BarangMasuk extends Component
     public function render()
     {
         $this->history = barang_masuk::with('produk')->get();
-
         return view('livewire.barang.barang-masuk')->with('listBarang', $this->history);
     }
 }

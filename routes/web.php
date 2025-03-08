@@ -6,6 +6,8 @@ use App\Livewire\Barang\BarangMasuk;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;
 use App\Livewire\Kategori\kategori;
+use App\Livewire\Transaksi\ListTransaksi;
+use App\Livewire\Transaksi\Penjualan;
 use App\Models\barang_masuk;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -61,3 +63,9 @@ Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
 
 // daftarkan barang
 Route::get('produk', AddProduk::class)->name('produk');
+
+// penjualan
+Route::get('penjualan', Penjualan::class)->name('penjualan');
+
+// list transaksi
+Route::get('list-transaksi', ListTransaksi::class)->name('list-transaksi');

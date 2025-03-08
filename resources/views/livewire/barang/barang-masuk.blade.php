@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group form-group-default">
-                        <label>Harga Modal</label>
+                        <label>Harga Modal/item</label>
                         <input id="modal" type="number" class="form-control rounded-pill" placeholder="Rp. 0" wire:model="harga">
                     </div>
                     <div class="form-group form-group-default">

@@ -10,7 +10,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="{{ route('kategori') }}" wire:navigate>Kategori</a>
+                <a href="{{ route('penjualan') }}" wire:navigate>Penjualan</a>
             </li>
         </ul>
     </div>
@@ -19,55 +19,14 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex align-items-center">
-                    <h4 class="card-title">Kategori</h4>
-                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
-                        data-bs-target="#addRowModal">
+                    <h4 class="card-title">Penjualan</h4>
+                    <button class="btn btn-primary btn-round ms-auto" wire:click="create">
                         <i class="fa fa-plus"></i>
-                        Tambah Kategori
+                        Tambah Penjualan
                     </button>
                 </div>
             </div>
             <div class="card-body">
-                <!-- Modal -->
-                <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header border-0">
-                                <h5 class="modal-title">
-                                    <span class="fw-mediumbold">Tambah Kategori</span>
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p class="small">
-                                    Tambahkan Kategori Produk
-                                </p>
-                                @if (session()->has('message'))
-                                    <div class="alert alert-success">{{ session('message') }}</div>
-                                @endif
-                                <form wire:submit.prevent="store">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="form-group form-group-default">
-                                                <label>Name</label>
-                                                <input id="addName" type="text" class="form-control"
-                                                    placeholder="fill name" wire:model="kategori" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer border-0">
-                                        <button type="submit" id="addRowButton" class="btn btn-primary">
-                                            Add
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive">
                     <table id="add-row" class="display table table-striped table-hover">
                         <thead>
@@ -83,9 +42,9 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @foreach ($kategoris as $kategori)
+                            @foreach ($penjualan as $history)
                                 <tr>
-                                    <td>{{ $kategori->kategori }}</td>
+                                    <td>{{ $history->user_id }}</td>
                                     <td>
                                         <div class="form-button-action">
                                             <button type="button" data-bs-toggle="tooltip" title=""

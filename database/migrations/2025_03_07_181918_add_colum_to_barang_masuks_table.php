@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('barang_masuks', function (Blueprint $table) {
             $table->integer('stok')->after('qty');
-            $table->integer('expired')->after('qty');
+            $table->date('expired')->after('qty');
         });
     }
 

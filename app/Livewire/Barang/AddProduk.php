@@ -27,7 +27,6 @@ class AddProduk extends Component
         'kat' => 'required',
         'satuan' => 'required',
         'margin' => 'required',
-        'margin' => 'required',
     ];
 
     public function resetForm()
@@ -42,6 +41,9 @@ class AddProduk extends Component
 
     public function store()
     {
+        if(empty($this->discount)){
+            $this->discount = 0;
+        }
         try {
             $this->validate();
             produk::create([
@@ -57,6 +59,15 @@ class AddProduk extends Component
             // You can log the error or handle it as needed
             Log::error('Error storing product: ' . $e->getMessage());
             session()->flash('error', 'There was an error saving the product');
+        }
+    }
+
+    public function updateProduk($id, $field, $value)
+    {
+        $produk = Produk::find($id);
+        if ($produk) {
+            $produk->$field = $value;
+            $produk->save();
         }
     }
 

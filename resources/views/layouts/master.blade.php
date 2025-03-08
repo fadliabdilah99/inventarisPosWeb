@@ -108,7 +108,13 @@
                                 {{-- <span class="badge badge-success">4</span> --}}
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="{{ route('penjualan') }}" wire:navigate>
+                                <i class="fas fa-desktop"></i>
+                                <p>Penjualan</p>
+                                {{-- <span class="badge badge-success">4</span> --}}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
