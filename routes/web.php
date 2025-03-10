@@ -68,4 +68,4 @@ Route::get('produk', AddProduk::class)->name('produk');
 Route::get('penjualan', Penjualan::class)->name('penjualan');
 
 // list transaksi
-Route::get('list-transaksi', ListTransaksi::class)->name('list-transaksi');
+Route::get('/list-transaksi/{id}', ListTransaksi::class)->name('list-transaksi');

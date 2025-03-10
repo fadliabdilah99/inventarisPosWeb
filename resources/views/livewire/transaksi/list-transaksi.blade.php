@@ -16,59 +16,27 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="{{ route('list-transaksi') }}" wire:navigate>list</a>
+                <a href="" wire:navigate>list</a>
             </li>
         </ul>
     </div>
-    {{ $id }}
     <div class="row">
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Top Products</div>
+                    <h5 class="card-title text-center">Scan Barcode</h5>
                 </div>
                 <div class="card-body pb-0">
-                    <div class="d-flex">
-                        <div class="avatar">
-                            <img src="assets/img/logoproduct.svg" alt="..." class="avatar-img rounded-circle">
-                        </div>
-                        <div class="flex-1 pt-1 ms-2">
-                            <h6 class="fw-bold mb-1">CSS</h6>
-                            <small class="text-muted">Cascading Style Sheets</small>
-                        </div>
-                        <div class="d-flex ms-auto align-items-center">
-                            <h4 class="text-info fw-bold">+$17</h4>
-                        </div>
+                    <div class="d-flex justify-content-center">
+                        <video id="preview" class="w-100 border border-dark rounded-3"></video>
                     </div>
-                    <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                        <div class="avatar">
-                            <img src="assets/img/logoproduct.svg" alt="..." class="avatar-img rounded-circle">
-                        </div>
-                        <div class="flex-1 pt-1 ms-2">
-                            <h6 class="fw-bold mb-1">J.CO Donuts</h6>
-                            <small class="text-muted">The Best Donuts</small>
-                        </div>
-                        <div class="d-flex ms-auto align-items-center">
-                            <h4 class="text-info fw-bold">+$300</h4>
-                        </div>
-                    </div>
-                    <div class="separator-dashed"></div>
-                    <div class="d-flex">
-                        <div class="avatar">
-                            <img src="assets/img/logoproduct3.svg" alt="..." class="avatar-img rounded-circle">
-                        </div>
-                        <div class="flex-1 pt-1 ms-2">
-                            <h6 class="fw-bold mb-1">Ready Pro</h6>
-                            <small class="text-muted">Bootstrap 5 Admin Dashboard</small>
-                        </div>
-                        <div class="d-flex ms-auto align-items-center">
-                            <h4 class="text-info fw-bold">+$350</h4>
-                        </div>
-                    </div>
-                    <div class="separator-dashed"></div>
-                    <div class="pull-in">
-                        <canvas id="topProductsChart"></canvas>
+                </div>
+                <div class="card-body pb-0">
+                    <div class="d-flex justify-content-center">
+                        <form wire:submit.prevent="addlist" method="POST" class="w-100">
+                            @csrf
+                            <input type="text" wire:model="produk_id" id="produk_id" class="form-control mt-2">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -77,11 +45,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Penjualan</h4>
-                        <button class="btn btn-primary btn-round ms-auto" wire:click="create">
-                            <i class="fa fa-plus"></i>
-                            Tambah Penjualan
-                        </button>
+                        <h4 class="card-title">List Transaksi</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -90,19 +54,25 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Qty</th>
+                                    <th>Harga</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Produk</th>
+                                    <th>Qty</th>
+                                    <th>Harga</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 @foreach ($list_transaksi as $list)
                                     <tr>
-                                        <td>{{ $list->user_id }}</td>
+                                        <td>{{ $list->produk->produk }}</td>
+                                        <td>{{ $list->qty }}</td>
+                                        <td>{{ $list->qty * $list->produk->margin }}</td>
                                         <td>
                                             <div class="form-button-action">
                                                 <button type="button" data-bs-toggle="tooltip" title=""
@@ -147,6 +117,35 @@
                     action,
                 ]);
             $("#addRowModal").modal("hide");
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('preview');
+            const form = document.querySelector('form');
+
+            let scanner = new Instascan.Scanner({
+                video: video
+            });
+
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                    // video.style.display = 'block';
+
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
+            scanner.addListener('scan', function(content) {
+                console.log(content);
+                document.getElementById('produk_id').value = content;
+                @this.set('produk_id', content);
+                @this.call('addlist');
+            });
         });
     </script>
 @endpush

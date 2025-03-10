@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigInteger('transaksi_id');
             $table->bigInteger('produk_id');
             $table->bigInteger('qty');
-            $table->bigInteger('total');
             $table->timestamps();
         });
     }

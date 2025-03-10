@@ -141,7 +141,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('preview');
-            const startButton = document.getElementById('startScan');
+
             const stopButton = document.getElementById('stopScan');
             const form = document.querySelector('form');
 
@@ -149,7 +149,7 @@
                 video: video
             });
 
-            startButton.addEventListener('click', function() {
+
                 Instascan.Camera.getCameras().then(function(cameras) {
                     if (cameras.length > 0) {
                         scanner.start(cameras[0]);
@@ -162,7 +162,7 @@
                 }).catch(function(e) {
                     console.error(e);
                 });
-            });
+
 
             stopButton.addEventListener('click', function() {
                 scanner.stop();

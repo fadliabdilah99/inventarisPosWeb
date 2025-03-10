@@ -22,7 +22,7 @@ class Penjualan extends Component
             'koin' => null,
         ]);
         $data['id'] = $id->id;
-        return redirect()->route('list-transaksi')->with($data);
+        return redirect()->route('list-transaksi', $data);
     }
     public function render()
     {
