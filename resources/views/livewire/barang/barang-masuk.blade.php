@@ -21,28 +21,33 @@
         <form wire:submit.prevent="scanDetected" method="POST">
             @csrf
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group form-group-default">
-                        <label>Kode Barang</label>
-                        <input readonly id="kode_barang" type="text" class="form-control" placeholder="isi nama barang"
-                            wire:model="kode">
-                    </div>
-                </div>
+
                 <div class="col-sm-12">
                     <div class="form-group form-group-default">
                         <label>Harga Modal/item</label>
-                        <input id="modal" type="number" class="form-control rounded-pill" placeholder="Rp. 0" wire:model="harga">
+                        <input id="modal" type="number" class="form-control rounded-pill" placeholder="Rp. 0"
+                            wire:model="harga">
                     </div>
                     <div class="form-group form-group-default">
                         <label>QTY</label>
-                        <input id="modal" type="number" class="form-control rounded-pill" placeholder="0" wire:model="qty">
+                        <input id="modal" type="number" class="form-control rounded-pill" placeholder="0"
+                            wire:model="qty">
                     </div>
                     <div class="form-group form-group-default">
                         <label>Expired</label>
-                        <input id="modal" type="date" class="form-control rounded-pill" placeholder="00/00/0000" wire:model="expired">
+                        <input id="modal" type="date" class="form-control rounded-pill" placeholder="00/00/0000"
+                            wire:model="expired">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group form-group-default">
+                        <label>Kode Barang</label>
+                        <input id="kode_barang" type="text" class="form-control" placeholder="isi nama barang"
+                            wire:model="kode">
                     </div>
                 </div>
             </div>
+            <button class="btn btn-success rounded-pill" type="submit" hidden></button>
             <button class="btn btn-success rounded-pill" id="startScan" type="button">Scan</button>
         </form>
     </div>
@@ -81,11 +86,14 @@
                         <tbody>
                             @foreach ($listBarang as $history)
                                 <tr>
-                                    <td>{{$history->produk->produk}}</td>
-                                    <td>{{$history->qty}} </td>
-                                    <td>{{ number_format($history->harga_modal * $history->qty, 0, ',', '.') }} <br> <span class="text-muted fs-6">{{ number_format($history->harga_modal, 0, ',', '.') }}/{{ $history->produk->satuan }}</span></td>
-                                    <td>{{$history->tgl_masuk}}</td>
-                                    <td>{{$history->expired}}</td>
+                                    <td>{{ $history->produk->produk }}</td>
+                                    <td>{{ $history->qty }} </td>
+                                    <td>{{ number_format($history->harga_modal * $history->qty, 0, ',', '.') }} <br>
+                                        <span
+                                            class="text-muted fs-6">{{ number_format($history->harga_modal, 0, ',', '.') }}/{{ $history->produk->satuan }}</span>
+                                    </td>
+                                    <td>{{ $history->tgl_masuk }}</td>
+                                    <td>{{ $history->expired }}</td>
                                     <td>
                                         <div class="form-button-action">
                                             <button type="button" data-bs-toggle="tooltip" title=""
@@ -150,18 +158,18 @@
             });
 
 
-                Instascan.Camera.getCameras().then(function(cameras) {
-                    if (cameras.length > 0) {
-                        scanner.start(cameras[0]);
-                        video.style.display = 'block';
-                        startButton.style.display = 'none';
-                        stopButton.style.display = 'inline';
-                    } else {
-                        console.error('No cameras found.');
-                    }
-                }).catch(function(e) {
-                    console.error(e);
-                });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                    video.style.display = 'block';
+                    startButton.style.display = 'none';
+                    stopButton.style.display = 'inline';
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
 
 
             stopButton.addEventListener('click', function() {

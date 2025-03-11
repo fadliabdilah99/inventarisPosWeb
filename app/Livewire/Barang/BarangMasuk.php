@@ -25,6 +25,13 @@ class BarangMasuk extends Component
         'qty' => 'required',
         'harga' => 'required',
     ];
+
+    public function refreshForm(){
+        $this->kode = '';
+        $this->qty = '';
+        $this->harga = '';
+        $this->expired = '';
+    }
     
 
     public function scanDetected()
@@ -44,7 +51,8 @@ class BarangMasuk extends Component
                 'stok' => $this->qty,
                 'expired' => $this->expired,
             ]);
-            return redirect('barang-masuk')->with('success', 'Produk berhasil ditambahkan');
+            $this->refreshForm();
+            // return redirect('barang-masuk')->with('success', 'Produk berhasil ditambahkan');
         } else {
             return redirect('barang-masuk')->with('error', 'Produk tidak ditemukan');
         }

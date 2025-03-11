@@ -13,6 +13,7 @@ use Livewire\Component;
 class ListTransaksi extends Component
 {
     public $produk_id, $id;
+    public $total = 0;
 
     public function mount($id) {
         $this->id = $id;
@@ -40,6 +41,21 @@ class ListTransaksi extends Component
         ]);
         }
         $this->resetForm();
+    }
+
+
+    public function bayar(){
+        $transaksi = transaksi::where('id', $this->id)->first();
+
+        foreach($transaksi->item as $items){
+            $items->produk->barang_masuk->first()->update([
+                'stok' => $items->produk->barang_masuk->first()->stok - $items->qty,
+            ]);
+        }
+
+        
+        $transaksi->status = 'payment';
+        $transaksi->save();
     }
 
     public function render()

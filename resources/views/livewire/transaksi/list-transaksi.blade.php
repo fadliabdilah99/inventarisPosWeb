@@ -56,6 +56,7 @@
                                     <th>Name</th>
                                     <th>Qty</th>
                                     <th>Harga</th>
+                                    <th>Total</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
                             </thead>
@@ -64,6 +65,7 @@
                                     <th>Produk</th>
                                     <th>Qty</th>
                                     <th>Harga</th>
+                                    <th>Total</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -72,7 +74,8 @@
                                     <tr>
                                         <td>{{ $list->produk->produk }}</td>
                                         <td>{{ $list->qty }}</td>
-                                        <td>{{ $list->qty * $list->produk->margin }}</td>
+                                        <td>{{ $list->produk->margin }}</td>
+                                        <td>{{ $total += $list->qty * $list->produk->margin }}</td>
                                         <td>
                                             <div class="form-button-action">
                                                 <button type="button" data-bs-toggle="tooltip" title=""
@@ -90,6 +93,55 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Payment</div>
+                                </div>
+                                <div class="card-body pb-0">
+                                    <div class="d-flex">
+                                        <div class="flex-1 pt-1 ms-2">
+                                            <h6 class="fw-bold mb-1">Total belanja</h6>
+                                        </div>
+                                        <div class="d-flex ms-auto align-items-center">
+                                            <h4 class="text-info fw-bold">Rp {{$total}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="separator-dashed"></div>
+                                    <div class="d-flex">
+                                        <div class="flex-1 pt-1 ms-2">
+                                            <h6 class="fw-bold mb-1">Discount</h6>
+                                        </div>
+                                        <div class="d-flex ms-auto align-items-center">
+                                            <h4 class="text-info fw-bold">Rp -</h4>
+                                        </div>
+                                    </div>
+                                    <div class="separator-dashed"></div>
+                                    <div class="d-flex">
+                                        <div class="flex-1 pt-1 ms-2">
+                                            <h6 class="fw-bold mb-1">PPN 11%</h6>
+                                        </div>
+                                        <div class="d-flex ms-auto align-items-center">
+                                            <h4 class="text-info fw-bold">Rp {{$tax =  $total * 0.11 }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="separator-dashed"></div>
+                                    <div class="d-flex">
+                                        <div class="flex-1 pt-1 ms-2">
+                                            <h6 class="fw-bold mb-1">Total Bayar</h6>
+                                        </div>
+                                        <div class="d-flex ms-auto align-items-center">
+                                            <h4 class="text-danger fw-bold">Rp {{$total + $tax}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="separator-dashed"></div>
+                                    <button class="btn btn-info" wire:click="bayar">konfirmasi</button>
+                                    <div class="pull-in">
+                                        <canvas id="topProductsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
