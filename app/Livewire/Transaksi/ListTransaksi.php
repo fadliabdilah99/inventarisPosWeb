@@ -14,47 +14,55 @@ class ListTransaksi extends Component
 {
     public $produk_id, $id;
     public $total = 0;
+    public $discount  = 0;
 
-    public function mount($id) {
+    public function mount($id)
+    {
         $this->id = $id;
     }
 
-    public function resetForm() {
+    public function resetForm()
+    {
         $this->produk_id = '';
     }
 
-    public function addlist() {
+    public function addlist()
+    {
         $produk = produk::where('kode', $this->produk_id)->first();
-        $list = transaksi_item::where('transaksi_id', $this->id)->where('produk_id', $produk->id)->first();
         if ($produk == null) {
-            return redirect()->route('produk')->with('error', 'Produk tidak ditemukan');
+            return redirect('list-transaksi/' . $this->id)->with('error', 'Produk tidak ditemukan');
         }
-        if($list != null) {
+        $list = transaksi_item::where('transaksi_id', $this->id)->where('produk_id', $produk->id)->first();
+        if ($list != null) {
             $list->qty += 1;
             $list->save();
             // return redirect()->route('list-transaksi', $this->id);
-        }else{
-        transaksi_item::create([
-            'transaksi_id' => $this->id,
-            'produk_id' => $produk->id,
-            'qty' => 1,
-        ]);
+        } else {
+            transaksi_item::create([
+                'transaksi_id' => $this->id,
+                'produk_id' => $produk->id,
+                'qty' => 1,
+            ]);
         }
         $this->resetForm();
     }
 
 
-    public function bayar(){
+    public function bayar()
+    {
         $transaksi = transaksi::where('id', $this->id)->first();
 
-        foreach($transaksi->item as $items){
+        $totals = 0;
+        foreach ($transaksi->item as $items) {
             $items->produk->barang_masuk->first()->update([
                 'stok' => $items->produk->barang_masuk->first()->stok - $items->qty,
             ]);
+            $totals += $items->produk->harga * $items->qty;
         }
 
-        
+
         $transaksi->status = 'payment';
+        $transaksi->total = $totals;
         $transaksi->save();
     }
 

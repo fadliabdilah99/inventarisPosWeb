@@ -54,7 +54,7 @@ class AddProduk extends Component
                 'margin' => $this->margin,
                 'discount' => $this->discount
             ]);
-            $this->resetForm();
+            return redirect('produk')->with('');
         } catch (\Exception $e) {
             // You can log the error or handle it as needed
             Log::error('Error storing product: ' . $e->getMessage());

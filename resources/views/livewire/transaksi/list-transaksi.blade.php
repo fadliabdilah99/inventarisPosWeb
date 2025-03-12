@@ -56,6 +56,7 @@
                                     <th>Name</th>
                                     <th>Qty</th>
                                     <th>Harga</th>
+                                    <th>Discount</th>
                                     <th>Total</th>
                                     <th style="width: 10%">Action</th>
                                 </tr>
@@ -65,6 +66,7 @@
                                     <th>Produk</th>
                                     <th>Qty</th>
                                     <th>Harga</th>
+                                    <th>Discount</th>
                                     <th>Total</th>
                                     <th>Action</th>
                                 </tr>
@@ -75,6 +77,7 @@
                                         <td>{{ $list->produk->produk }}</td>
                                         <td>{{ $list->qty }}</td>
                                         <td>{{ $list->produk->margin }}</td>
+                                        <td>{{ $discount += ($list->produk->discount * $list->produk->margin / 100) * $list->qty }}</td>
                                         <td>{{ $total += $list->qty * $list->produk->margin }}</td>
                                         <td>
                                             <div class="form-button-action">
@@ -104,7 +107,7 @@
                                             <h6 class="fw-bold mb-1">Total belanja</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{$total}}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ $total }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -113,7 +116,7 @@
                                             <h6 class="fw-bold mb-1">Discount</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp -</h4>
+                                            <h4 class="text-info fw-bold">Rp {{$discount }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -122,7 +125,7 @@
                                             <h6 class="fw-bold mb-1">PPN 11%</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{$tax =  $total * 0.11 }}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ $tax = $total * 0.11 }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -131,7 +134,7 @@
                                             <h6 class="fw-bold mb-1">Total Bayar</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-danger fw-bold">Rp {{$total + $tax}}</h4>
+                                            <h4 class="text-danger fw-bold">Rp {{ $total + $tax - $discount }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>

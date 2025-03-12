@@ -32,12 +32,20 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>penanggung jawab</th>
+                                <th>total item</th>
+                                <th>total transaksi</th>
+                                <th>Status</th>
                                 <th style="width: 10%">Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Name</th>
+                                <th>penanggung jawab</th>
+                                <th>total item</th>
+                                <th>total transaksi</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -45,6 +53,10 @@
                             @foreach ($penjualan as $history)
                                 <tr>
                                     <td>{{ $history->user_id }}</td>
+                                    <td>test</td>
+                                    <td>{{ $history->item->count() }}</td>
+                                    <td></td>
+                                    <td>{{ $history->status }}</td>
                                     <td>
                                         <div class="form-button-action">
                                             <button type="button" data-bs-toggle="tooltip" title=""
