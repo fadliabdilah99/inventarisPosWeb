@@ -26,6 +26,7 @@ class Penjualan extends Component
     }
     public function render()
     {
+        transaksi::where('status', 'pending')->delete();
         $data['penjualan'] = transaksi::all();
         return view('livewire.transaksi.penjualan', $data);
     }

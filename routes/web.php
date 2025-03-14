@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Livewire\Barang\AddProduk;
 use App\Livewire\Barang\BarangMasuk;
+use App\Livewire\Barang\Struk;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;
 use App\Livewire\Kategori\kategori;
@@ -69,3 +70,4 @@ Route::get('penjualan', Penjualan::class)->name('penjualan');
 
 // list transaksi
 Route::get('/list-transaksi/{id}', ListTransaksi::class)->name('list-transaksi');
+Route::get('/invoice/{id}', Struk::class)->name('invoice');

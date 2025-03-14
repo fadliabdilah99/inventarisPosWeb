@@ -83,6 +83,18 @@ class ListTransaksi extends Component
         $transaksi->status = 'payment';
         $transaksi->total = $totals;
         $transaksi->save();
+
+        return redirect()->route('invoice', $this->id);
+    }
+
+    public function updateList($id, $field, $value)
+    {
+        // dd($id);
+        $produk = transaksi_item::find($id);
+        if ($produk) {
+            $produk->qty = $value;
+            $produk->save();
+        }
     }
 
 

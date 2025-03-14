@@ -72,10 +72,16 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach ($list_transaksi as $list)
+                                @foreach ($list_transaksi as $index => $list)
                                     <tr>
                                         <td>{{ $list->produk->produk }}</td>
-                                        <td>{{ $list->qty }}</td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <input type="number" class="form-control" value="{{ $list->qty }}"
+                                                    wire:model.lazy="list_transaksi.{{ $index }}.qty"
+                                                    wire:change="updateList({{ $list->id }}, 'qty', $event.target.value)">
+                                            </div>
+                                        </td>
                                         <td>{{ $list->produk->margin }}</td>
                                         <td>{{ $discount += (($list->produk->discount * $list->produk->margin) / 100) * $list->qty }}
                                         </td>
