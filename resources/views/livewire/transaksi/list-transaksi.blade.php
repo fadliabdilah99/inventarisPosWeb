@@ -77,7 +77,8 @@
                                         <td>{{ $list->produk->produk }}</td>
                                         <td>{{ $list->qty }}</td>
                                         <td>{{ $list->produk->margin }}</td>
-                                        <td>{{ $discount += ($list->produk->discount * $list->produk->margin / 100) * $list->qty }}</td>
+                                        <td>{{ $discount += (($list->produk->discount * $list->produk->margin) / 100) * $list->qty }}
+                                        </td>
                                         <td>{{ $total += $list->qty * $list->produk->margin }}</td>
                                         <td>
                                             <div class="form-button-action">
@@ -116,7 +117,7 @@
                                             <h6 class="fw-bold mb-1">Discount</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{$discount }}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ $discount }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>

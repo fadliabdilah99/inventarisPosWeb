@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "kategori": "minyak"
+  },
+  {
+    "id": 2,
+    "kategori": "gula"
+  },
+  {
+    "id": 3,
+    "kategori": "mie"
+  },
+  {
+    "id": 4,
+    "kategori": "Sabun mandi"
+  },
+  {
+    "id": 5,
+    "kategori": "Detergen"
+  },
+  {
+    "id": 6,
+    "kategori": "Snack"
+  },
+  {
+    "id": 7,
+    "kategori": "Minuman"
+  }
+]

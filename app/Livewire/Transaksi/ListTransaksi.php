@@ -5,6 +5,7 @@ namespace App\Livewire\Transaksi;
 use App\Models\produk;
 use App\Models\transaksi;
 use App\Models\transaksi_item;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -48,23 +49,42 @@ class ListTransaksi extends Component
     }
 
 
+
     public function bayar()
     {
+
         $transaksi = transaksi::where('id', $this->id)->first();
 
-        $totals = 0;
-        foreach ($transaksi->item as $items) {
-            $items->produk->barang_masuk->first()->update([
-                'stok' => $items->produk->barang_masuk->first()->stok - $items->qty,
-            ]);
-            $totals += $items->produk->harga * $items->qty;
+        if (!$transaksi) {
+            return;
         }
 
 
+        $totals = 0;
+
+        foreach ($transaksi->item as $items) {
+
+
+            $barangMasuk = $items->produk->barang_masuk->first();
+
+            if (!$barangMasuk) {
+                continue;
+            }
+
+
+            $barangMasuk->update([
+                'stok' => $barangMasuk->stok - $items->qty,
+            ]);
+
+            $totals += $items->produk->margin * $items->qty;
+        }
+
+        $transaksi->koin = floor($totals / 1000);
         $transaksi->status = 'payment';
         $transaksi->total = $totals;
         $transaksi->save();
     }
+
 
     public function render()
     {

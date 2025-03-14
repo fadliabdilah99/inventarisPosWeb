@@ -52,10 +52,10 @@
                         <tbody>
                             @foreach ($penjualan as $history)
                                 <tr>
-                                    <td>{{ $history->user_id }}</td>
+                                    <td>{{ $history->user_id ? $history->user->name : 'Pelanggan Umum' }}</td>
                                     <td>test</td>
                                     <td>{{ $history->item->count() }}</td>
-                                    <td></td>
+                                    <td>{{ $history->total }}</td>
                                     <td>{{ $history->status }}</td>
                                     <td>
                                         <div class="form-button-action">

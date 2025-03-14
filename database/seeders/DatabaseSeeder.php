@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        produk::factory()->count(50)->create();
+
+        $this->call([
+            kategoriSeeder::class
+        ]);
+        
+        // produk::factory()->count(50)->create();
         // $this->call([
         //     kategoriSeeder::class
         // ]);
