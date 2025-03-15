@@ -23,8 +23,8 @@
                                 </div>
                                 <div class="col col-stats ms-3 ms-sm-0">
                                     <div class="numbers">
-                                        <p class="card-category">Visitors</p>
-                                        <h4 class="card-title">1,294</h4>
+                                        <p class="card-category">Member</p>
+                                        <h4 class="card-title">{{ $member }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -42,8 +42,8 @@
                                 </div>
                                 <div class="col col-stats ms-3 ms-sm-0">
                                     <div class="numbers">
-                                        <p class="card-category">Subscribers</p>
-                                        <h4 class="card-title">1303</h4>
+                                        <p class="card-category">Valuasi Barang</p>
+                                        <h4 class="card-title">{{$valuasi}}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -61,8 +61,8 @@
                                 </div>
                                 <div class="col col-stats ms-3 ms-sm-0">
                                     <div class="numbers">
-                                        <p class="card-category">Sales</p>
-                                        <h4 class="card-title">$ 1,345</h4>
+                                        <p class="card-category">Pemasukan</p>
+                                        <h4 class="card-title">Rp {{ number_format($pemasukan) }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -80,8 +80,8 @@
                                 </div>
                                 <div class="col col-stats ms-3 ms-sm-0">
                                     <div class="numbers">
-                                        <p class="card-category">Order</p>
-                                        <h4 class="card-title">576</h4>
+                                        <p class="card-category">Pengeluaran</p>
+                                        <h4 class="card-title">Rp {{ number_format($pengeluaran) }}</h4>
                                     </div>
                                 </div>
                             </div>
