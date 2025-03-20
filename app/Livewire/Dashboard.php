@@ -15,6 +15,8 @@ use Livewire\Component;
 #[Layout('layouts.master')]
 class Dashboard extends Component
 {
+
+    // public $penjualan = [];
     public function goToDashboard()
     {
         return redirect()->route('dashboard');
@@ -23,7 +25,19 @@ class Dashboard extends Component
 
     public function render()
     {
-        $data['member'] = User::where('role', 'member')->count(); 
+        $date = date('Y-m-d');
+        $totalDay = date('t', strtotime($date));
+
+        $penjualan = [];
+        for ($i = 1; $i <= $totalDay; $i++) {
+            $penjualan[] = transaksi::whereDay('created_at', $i)->sum('total');
+        }
+
+        $data['penjualan'] = json_encode($penjualan); // Ubah ke JSON
+        $data['labels'] = json_encode(range(1, $totalDay)); // Label tanggal dari 1 sampai akhir bulan
+
+
+        $data['member'] = User::where('role', 'member')->count();
         $data['valuasi'] = barang_masuk::sum(FacadesDB::raw('stok * harga_modal'));
         $data['pemasukan'] = transaksi::sum('total');
         $data['pengeluaran'] = barang_masuk::sum(FacadesDB::raw('qty * harga_modal'));

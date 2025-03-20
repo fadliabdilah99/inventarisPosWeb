@@ -3,7 +3,7 @@
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
-                    <h3 class="fw-bold mb-3">Dashboard</h3>
+                    <h3 class="fw-bold mb-3">Dashboard  </h3>
                     <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
@@ -43,7 +43,7 @@
                                 <div class="col col-stats ms-3 ms-sm-0">
                                     <div class="numbers">
                                         <p class="card-category">Valuasi Barang</p>
-                                        <h4 class="card-title">{{$valuasi}}</h4>
+                                        <h4 class="card-title">Rp {{ number_format($valuasi) }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -520,3 +520,73 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        var dailySalesChart = document.getElementById('dailySalesChart').getContext('2d');
+        var salesData = {!! $penjualan !!};
+        var labels = {!! $labels !!};
+
+        var myDailySalesChart = new Chart(dailySalesChart, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Sales Analytics",
+                    fill: !0,
+                    backgroundColor: "rgba(255,255,255,0.2)",
+                    borderColor: "#fff",
+                    borderCapStyle: "butt",
+                    borderDash: [],
+                    borderDashOffset: 0,
+                    pointBorderColor: "#fff",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "#fff",
+                    pointHoverBorderWidth: 1,
+                    pointRadius: 1,
+                    pointHitRadius: 5,
+                    data: salesData
+                }]
+            },
+            options: {
+                maintainAspectRatio: !1,
+                legend: {
+                    display: !1
+                },
+                animation: {
+                    easing: "easeInOutBack"
+                },
+                scales: {
+                    yAxes: [{
+                        display: !1,
+                        ticks: {
+                            fontColor: "rgba(0,0,0,0.5)",
+                            fontStyle: "bold",
+                            beginAtZero: !0,
+                            maxTicksLimit: 10,
+                            padding: 0
+                        },
+                        gridLines: {
+                            drawTicks: !1,
+                            display: !1
+                        }
+                    }],
+                    xAxes: [{
+                        display: !1,
+                        gridLines: {
+                            zeroLineColor: "transparent"
+                        },
+                        ticks: {
+                            padding: -20,
+                            fontColor: "rgba(255,255,255,0.2)",
+                            fontStyle: "bold"
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+@endpush

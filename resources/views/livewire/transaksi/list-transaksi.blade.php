@@ -145,14 +145,9 @@
                                             <h4 class="text-danger fw-bold">Rp {{ $total + $tax - $discount }}</h4>
                                         </div>
                                     </div>
-                                    <h1>hello {{ $selectedMember }}</h1>
+                                    <input type="number" class="form-control" placeholder="No member (opsional)"
+                                        wire:change="add_member($event.target.value)">
                                     <div class="separator-dashed"></div>
-                                    <select wire:model="selectedMember">
-                                        <option value="">Pilih Pelanggan</option>
-                                        @foreach ($members as $member)
-                                            <option value="{{ $member->id }}">{{ $member->name }}</option>
-                                        @endforeach
-                                    </select>
                                     <button class="btn btn-info" wire:click="bayar">konfirmasi</button>
                                     <div class="pull-in">
                                         <canvas id="topProductsChart"></canvas>

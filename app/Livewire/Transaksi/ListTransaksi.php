@@ -50,15 +50,6 @@ class ListTransaksi extends Component
         $this->resetForm();
     }
 
-    public function updatedSelectedMember($value)
-    {
-        // Bisa digunakan untuk mengambil detail member jika diperlukan
-        $this->selectedMember = $value;
-        Log::info($this->selectedMember);
-    }
-
-
-
 
     public function bayar()
     {
@@ -89,7 +80,16 @@ class ListTransaksi extends Component
             $totals += $items->produk->margin * $items->qty;
         }
 
+
+
         $transaksi->koin = floor($totals / 1000);
+
+        if($this->selectedMember != null){
+          User::where('nomor', $this->selectedMember)->update(['koin' => User::where('nomor', $this->selectedMember)->first()->point + $transaksi->koin]);
+        }
+
+
+
         $transaksi->status = 'payment';
         $transaksi->total = $totals;
         $transaksi->save();
@@ -105,6 +105,13 @@ class ListTransaksi extends Component
             $produk->qty = $value;
             $produk->save();
         }
+    }
+
+    public function add_member($kode)
+    {
+        $this->selectedMember = $kode;
+        $member = User::where('nomor', $this->selectedMember)->first();
+        transaksi::where('id', $this->id)->update(['user_id' => $member->id]);
     }
 
 

@@ -11,5 +11,9 @@ class transaksi extends Model
     public function item() {
         return $this->hasMany(transaksi_item::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
     
 }
