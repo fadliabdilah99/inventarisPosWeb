@@ -5,6 +5,7 @@ namespace App\Livewire\Transaksi;
 use App\Models\produk;
 use App\Models\transaksi;
 use App\Models\transaksi_item;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -16,6 +17,7 @@ class ListTransaksi extends Component
     public $produk_id, $id;
     public $total = 0;
     public $discount  = 0;
+    public $selectedMember;
 
     public function mount($id)
     {
@@ -47,6 +49,14 @@ class ListTransaksi extends Component
         }
         $this->resetForm();
     }
+
+    public function updatedSelectedMember($value)
+    {
+        // Bisa digunakan untuk mengambil detail member jika diperlukan
+        $this->selectedMember = $value;
+        Log::info($this->selectedMember);
+    }
+
 
 
 
@@ -102,6 +112,7 @@ class ListTransaksi extends Component
     {
         $data['list_transaksi'] = transaksi_item::where('transaksi_id', $this->id)->get();
         // dd($data);
+        $data['members'] = User::where('role', 'member')->get();
         return view('livewire.transaksi.list-transaksi')->with($data);
     }
 }

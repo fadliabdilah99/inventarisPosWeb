@@ -35,7 +35,8 @@
                     <div class="d-flex justify-content-center">
                         <form wire:submit.prevent="addlist" method="POST" class="w-100">
                             @csrf
-                            <input type="text" wire:model="produk_id" id="produk_id" class="form-control mt-2">
+                            <input type="text" wire:model="produk_id" id="produk_id" class="form-control mt-2"
+                                placeholder="Kode Produk">
                         </form>
                     </div>
                 </div>
@@ -144,7 +145,14 @@
                                             <h4 class="text-danger fw-bold">Rp {{ $total + $tax - $discount }}</h4>
                                         </div>
                                     </div>
+                                    <h1>hello {{ $selectedMember }}</h1>
                                     <div class="separator-dashed"></div>
+                                    <select wire:model="selectedMember">
+                                        <option value="">Pilih Pelanggan</option>
+                                        @foreach ($members as $member)
+                                            <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                        @endforeach
+                                    </select>
                                     <button class="btn btn-info" wire:click="bayar">konfirmasi</button>
                                     <div class="pull-in">
                                         <canvas id="topProductsChart"></canvas>
