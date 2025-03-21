@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ExportController;
 use App\Livewire\Barang\AddProduk;
 use App\Livewire\Barang\BarangMasuk;
 use App\Livewire\Barang\Struk;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;
 use App\Livewire\Kategori\kategori;
+use App\Livewire\Pengajuan;
 use App\Livewire\Transaksi\ListTransaksi;
 use App\Livewire\Transaksi\Penjualan;
 use App\Models\barang_masuk;
@@ -17,7 +20,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-
+Route::get('/download-pdf', [ExportController::class, 'generatePdf'])->name('download.pdf');
 
 
 // auth proses
@@ -56,18 +59,28 @@ Route::view('profile', 'profile')
 
 Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-// kategori
-Route::get('kategori', Kategori::class)->name('kategori');
 
-// barang masuk
-Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
 
-// daftarkan barang
-Route::get('produk', AddProduk::class)->name('produk');
+Route::group(['middleware' => ['role:admin,gudang']], function () {
+    // kategori
+    Route::get('kategori', Kategori::class)->name('kategori');
+    // daftarkan barang
+    Route::get('produk', AddProduk::class)->name('produk');
+    // barang masuk
+    Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
+});
 
-// penjualan
-Route::get('penjualan', Penjualan::class)->name('penjualan');
+Route::group(['middleware' => ['role:admin,kasir']], function () {
+    // penjualan
+    Route::get('penjualan', Penjualan::class)->name('penjualan');
 
-// list transaksi
-Route::get('/list-transaksi/{id}', ListTransaksi::class)->name('list-transaksi');
-Route::get('/invoice/{id}', Struk::class)->name('invoice');
+    // list transaksi
+    Route::get('/list-transaksi/{id}', ListTransaksi::class)->name('list-transaksi');
+    Route::get('/invoice/{id}', Struk::class)->name('invoice');
+});
+
+
+// pengajuan
+Route::group(['middleware' => ['role:admin,gudang,member']], function () {
+    Route::get('pengajuan', Pengajuan::class)->name('pengajuan');
+});

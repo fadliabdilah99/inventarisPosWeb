@@ -61,39 +61,54 @@
             <div class="sidebar-wrapper scrollbar scrollbar-inner">
                 <div class="sidebar-content">
                     <ul class="nav nav-secondary">
+                        @if (Auth::user()->role == 'admin')
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }} " wire:navigate>
+                                    <i class="fas fa-home"></i>
+                                    <p>Dashboard</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->role == 'gudang' || Auth::user()->role == 'admin')
+                            <li class="nav-item">
+                                <a href="{{ route('kategori') }}" wire:navigate>
+                                    <i class="fas fa-boxes"></i>
+                                    <p>Kategori</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('produk') }}" wire:navigate>
+                                    <i class="fas fa-box"></i>
+                                    <p>Produk</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
 
+                            <li class="nav-item">
+                                <a href="{{ route('barang-masuk') }}" wire:navigate>
+                                    <i class="fas fa-dolly-flatbed"></i>
+                                    <p>Barang Masuk</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                            <li class="nav-item">
+                                <a href="{{ route('penjualan') }}" wire:navigate>
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <p>Penjualan</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'member')
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('dashboard') }} " wire:navigate>
-                                <i class="fas fa-desktop"></i>
-                                <p>Dashboard</p>
-                                {{-- <span class="badge badge-success">4</span> --}}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('kategori') }}" wire:navigate>
-                                <i class="fas fa-desktop"></i>
-                                <p>Kategori</p>
-                                {{-- <span class="badge badge-success">4</span> --}}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('produk') }}" wire:navigate>
-                                <i class="fas fa-desktop"></i>
-                                <p>Produk</p>
-                                {{-- <span class="badge badge-success">4</span> --}}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('barang-masuk') }}" wire:navigate>
-                                <i class="fas fa-desktop"></i>
-                                <p>Barang Masuk</p>
-                                {{-- <span class="badge badge-success">4</span> --}}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('penjualan') }}" wire:navigate>
-                                <i class="fas fa-desktop"></i>
-                                <p>Penjualan</p>
+                            <a href="{{ route('pengajuan') }}" wire:navigate>
+                                <i class="fas fa-envelope"></i>
+                                <p>Pengajuan Barang</p>
                                 {{-- <span class="badge badge-success">4</span> --}}
                             </a>
                         </li>
@@ -505,6 +520,7 @@
 
 
 
+
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
@@ -541,6 +557,7 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="{{ asset('assets/js/setting-demo.js') }}"></script>
     <script src="{{ asset('assets/js/demo.js') }}"></script>
+
     <script>
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
             type: "line",
@@ -614,6 +631,7 @@
         });
     </script>
     @stack('scripts')
+
 </body>
 
 </html>
