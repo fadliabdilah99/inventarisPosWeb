@@ -3,7 +3,7 @@
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
-                    <h3 class="fw-bold mb-3">Dashboard  </h3>
+                    <h3 class="fw-bold mb-3">Dashboard </h3>
                     <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
@@ -589,4 +589,191 @@
             }
         });
     </script>
+
+
+    <script>
+        var ctx = document.getElementById('statisticsChart').getContext('2d');
+
+        var salesData = {!! $penjualan !!};
+        var totalData = {!! $total_transaksi !!};
+        var labels = {!! $labels !!};
+
+        var statisticsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Pemasukan",
+                    borderColor: '#f3545d',
+                    pointBackgroundColor: 'rgba(243, 84, 93, 0.6)',
+                    pointRadius: 3,
+                    borderWidth: 3, // Membuat garis lebih tebal
+                    backgroundColor: 'rgba(243, 84, 93, 0.2)',
+                    legendColor: '#f3545d',
+                    fill: true,
+                    yAxisID: 'y-axis-1', // Pakai sumbu Y pertama
+                    data: salesData
+                }, {
+                    label: "Total Transaksi",
+                    borderColor: '#fdaf4b',
+                    pointBackgroundColor: 'rgba(253, 175, 75, 0.6)',
+                    pointRadius: 3,
+                    borderWidth: 2, // Lebih tipis dari yang pertama
+                    backgroundColor: 'rgba(253, 175, 75, 0.2)',
+                    legendColor: '#fdaf4b',
+                    fill: true,
+                    yAxisID: 'y-axis-2', // Pakai sumbu Y kedua agar tidak tenggelam
+                    data: totalData
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: "index",
+                    intersect: false
+                },
+                layout: {
+                    padding: {
+                        left: 5,
+                        right: 5,
+                        top: 15,
+                        bottom: 15
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        id: 'y-axis-1',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: false,
+                            suggestedMin: Math.min(...salesData) * 0.8, // Agar tidak terlalu rapat di bawah
+                            suggestedMax: Math.max(...salesData) * 1.2
+                        },
+                        gridLines: {
+                            drawTicks: false,
+                            display: true
+                        }
+                    }, {
+                        id: 'y-axis-2',
+                        position: 'right',
+                        ticks: {
+                            beginAtZero: false,
+                            suggestedMin: Math.min(...totalData) * 0.8,
+                            suggestedMax: Math.max(...totalData) * 1.2
+                        },
+                        gridLines: {
+                            drawTicks: false,
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            zeroLineColor: "transparent"
+                        },
+                        ticks: {
+                            padding: 10,
+                            fontStyle: "500"
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+
+    {{-- <script>
+        var ctx = document.getElementById('statisticsChart').getContext('2d');
+
+        var salesData = {!! $penjualan !!};
+        var totalData = {!! $total_transaksi !!};
+        var labels = {!! $labels !!};
+
+        var statisticsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Pemasukan",
+                    borderColor: '#f3545d',
+                    pointBackgroundColor: 'rgba(243, 84, 93, 0.6)',
+                    pointRadius: 0,
+                    backgroundColor: 'rgba(243, 84, 93, 0.4)',
+                    legendColor: '#f3545d',
+                    fill: true,
+                    data: salesData
+                }, {
+                    label: "Total Transaksi",
+                    borderColor: '#fdaf4b',
+                    pointBackgroundColor: 'rgba(253, 175, 75, 0.6)',
+                    pointRadius: 0,
+                    backgroundColor: 'rgba(253, 175, 75, 0.4)',
+                    legendColor: '#fdaf4b',
+                    fill: true,
+                    data: totalData
+                }, ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    bodySpacing: 4,
+                    mode: "nearest",
+                    intersect: 0,
+                    position: "nearest",
+                    xPadding: 10,
+                    yPadding: 10,
+                    caretPadding: 10
+                },
+                layout: {
+                    padding: {
+                        left: 5,
+                        right: 5,
+                        top: 15,
+                        bottom: 15
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontStyle: "500",
+                            beginAtZero: false,
+                            maxTicksLimit: 5,
+                            padding: 10
+                        },
+                        gridLines: {
+                            drawTicks: false,
+                            display: false
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            zeroLineColor: "transparent"
+                        },
+                        ticks: {
+                            padding: 10,
+                            fontStyle: "500"
+                        }
+                    }]
+                },
+                legendCallback: function(chart) {
+                    var text = [];
+                    text.push('<ul class="' + chart.id + '-legend html-legend">');
+                    for (var i = 0; i < chart.data.datasets.length; i++) {
+                        text.push('<li><span style="background-color:' + chart.data.datasets[i].legendColor +
+                            '"></span>');
+                        if (chart.data.datasets[i].label) {
+                            text.push(chart.data.datasets[i].label);
+                        }
+                        text.push('</li>');
+                    }
+                    text.push('</ul>');
+                    return text.join('');
+                }
+            }
+        });
+    </script> --}}
 @endpush

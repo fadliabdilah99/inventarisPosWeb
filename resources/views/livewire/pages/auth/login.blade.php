@@ -25,9 +25,9 @@ new #[Layout('layouts.guest')] class extends Component
         } elseif (Auth::user()->role == 'kasir') {
             $this->redirectIntended(route('kasir'), navigate: true);
         } elseif (Auth::user()->role == 'gudang') {
-            $this->redirectIntended(route('gudang'), navigate: true);
+            $this->redirectIntended(route('produk'), navigate: true);
         } elseif (Auth::user()->role == 'member') {
-            $this->redirectIntended(route('member'), navigate: true);
+            $this->redirectIntended(route('pengajuan'), navigate: true);
         } else {
             # code...
         }

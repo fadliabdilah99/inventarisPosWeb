@@ -20,13 +20,20 @@
             <div class="card-header">
                 <div class="d-flex align-items-center">
                     <h4 class="card-title">Pengajuan Barang</h4>
-                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
-                        data-bs-target="#addRowModal">
-                        <i class="fa fa-plus"></i>
-                        Ajukan Barang
-                    </button>
+                    @if (Auth::user()->role == 'member')
+                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                            data-bs-target="#addRowModal">
+                            <i class="fa fa-plus"></i>
+                            Ajukan Barang
+                        </button>
+                    @endif
                     <div class="ps-1">
-                        <button wire:click="exportPdf" class="btn btn-link btn-danger"><i class="fas fa-file-pdf fs-2"></i></button>
+                        <button wire:click="exportPdf" class="btn btn-link btn-danger"><i
+                                class="fas fa-file-pdf fs-2"></i></button>
+                    </div>
+                    <div>
+                        <button wire:click="exportExcel" class="btn btn-link btn-success"><i
+                                class="fas fa-file-excel fs-2"></i></button>
                     </div>
 
                 </div>
@@ -102,16 +109,35 @@
                             @foreach ($pengajuans as $pengajuan)
                                 <tr>
                                     <td>{{ $pengajuan->user->name }}</td>
-                                    <td>{{ $pengajuan->nama_barang }}</td>
+                                    <td>
+                                        @if (Auth::user()->id != $pengajuan->user_id)
+                                            {{ $pengajuan->nama_barang }}
+                                        @else
+                                            <div class="d-flex flex-column">
+                                                <input type="text" class="form-control"
+                                                    value="{{ $pengajuan->nama_barang }}"
+                                                    wire:change="updatePengajuan({{ $pengajuan->id }}, 'nama_barang', $event.target.value)">
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td>{{ $pengajuan->tgl_pengajuan }}</td>
-                                    <td>{{ $pengajuan->qty }}</td>
+                                    <td>
+                                        @if (Auth::user()->id != $pengajuan->user_id)
+                                            {{ $pengajuan->qty }}
+                                        @else
+                                            <div class="d-flex flex-column">
+                                                <input type="number" class="form-control" value="{{ $pengajuan->qty }}"
+                                                    wire:change="updatePengajuan({{ $pengajuan->id }}, 'qty', $event.target.value)">
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="form-switch">
                                             @if (Auth::user()->role == 'gudang')
                                                 <input type="checkbox" class="form-check-input"
                                                     id="customSwitch{{ $pengajuan->id }}"
                                                     {{ $pengajuan->status == 1 ? 'checked' : '' }}
-                                                    wire:change="updateTerpenuhi({{ $pengajuan->id }})">
+                                                    wire:change="updateStatus({{ $pengajuan->id }})">
                                                 <label class="form-check-label" for="customSwitch{{ $pengajuan->id }}">
                                                     {{-- <span class="switch-text-left">Belum</span>
                                                 <span class="switch-text-right">Terpenuhi</span> --}}

@@ -31,9 +31,11 @@ class Dashboard extends Component
         $penjualan = [];
         for ($i = 1; $i <= $totalDay; $i++) {
             $penjualan[] = transaksi::whereDay('created_at', $i)->sum('total');
+            $total_transaksi[] = transaksi::whereDay('created_at', $i)->count();
         }
 
         $data['penjualan'] = json_encode($penjualan); // Ubah ke JSON
+        $data['total_transaksi'] = json_encode($total_transaksi); // Ubah ke JSON
         $data['labels'] = json_encode(range(1, $totalDay)); // Label tanggal dari 1 sampai akhir bulan
 
 
