@@ -115,7 +115,7 @@
                                             <h6 class="fw-bold mb-1">Total belanja</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{ $total }}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ number_format($total) }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -124,7 +124,7 @@
                                             <h6 class="fw-bold mb-1">Discount</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{ $discount }}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ number_format($discount) }}</h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -133,7 +133,8 @@
                                             <h6 class="fw-bold mb-1">PPN 11%</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-info fw-bold">Rp {{ $tax = $total * 0.11 }}</h4>
+                                            <h4 class="text-info fw-bold">Rp {{ number_format($tax = $total * 0.11) }}
+                                            </h4>
                                         </div>
                                     </div>
                                     <div class="separator-dashed"></div>
@@ -142,11 +143,20 @@
                                             <h6 class="fw-bold mb-1">Total Bayar</h6>
                                         </div>
                                         <div class="d-flex ms-auto align-items-center">
-                                            <h4 class="text-danger fw-bold">Rp {{ $total + $tax - $discount }}</h4>
+                                            <h4 class="text-danger fw-bold">Rp
+                                                {{ number_format($total + $tax - $discount) }}</h4>
                                         </div>
                                     </div>
-                                    <input type="number" class="form-control" placeholder="No member (opsional)"
-                                        wire:change="add_member($event.target.value)">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" placeholder="No member"
+                                            style="width: 33.33%" wire:change="add_member($event.target.value)">
+                                        <input type="text" class="form-control" placeholder="Uang bayar"
+                                            id="uang_bayar" style="width: 33.33%" onchange="hitung_kembalian()">
+                                        <input type="number" class="form-control" placeholder="Kembalian"
+                                            id="kembalian" style="width: 33.33%" readonly>
+                                    </div>
+
+
                                     <div class="separator-dashed"></div>
                                     <button class="btn btn-info" wire:click="bayar">konfirmasi</button>
                                     <div class="pull-in">
@@ -212,5 +222,15 @@
                 @this.call('addlist');
             });
         });
+    </script>
+
+    {{-- mengtung kembalian --}}
+    <script>
+        function hitung_kembalian() {
+            let uang_bayar = parseInt(document.getElementById('uang_bayar').value);
+            let total_bayar = parseInt({{ $total + $tax - $discount }});
+            let kembalian = uang_bayar - total_bayar;
+            document.getElementById('kembalian').value = kembalian;
+        }
     </script>
 @endpush

@@ -162,49 +162,45 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($produks->item as $prods)
+                            @php
+                                $total = 0;
+                                $discount = 0;
+                            @endphp
+                            @foreach ($produks->item as $list)
+                                @php
+                                    $subtotal = $list->qty * $list->produk->margin;
+                                    $disc = (($list->produk->discount * $list->produk->margin) / 100) * $list->qty;
+                                    $discount += $disc;
+                                    $total += $subtotal;
+                                @endphp
                                 <tr>
-                                    <td class="col-md-9">Payment for August 2016</td>
-                                    <td class="col-md-3"><i class="fa fa-inr"></i> 15,000/-</td>
+                                    <td class="col-md-9">{{ $list->produk->produk }}</td>
+                                    <td class="col-md-3"><i class="fa fa-inr"></i> {{ number_format($subtotal, 2) }}
+                                    </td>
                                 </tr>
                             @endforeach
+                            @php
+                                $tax = $total * 0.11;
+                                $payable = $total + $tax - $discount;
+                            @endphp
                             <tr>
-                                <td class="text-right">
-                                    <p>
-                                        <strong>Total Amount: </strong>
-                                    </p>
-                                    <p>
-                                        <strong>Late Fees: </strong>
-                                    </p>
-                                    <p>
-                                        <strong>Payable Amount: </strong>
-                                    </p>
-                                    <p>
-                                        <strong>Balance Due: </strong>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <strong><i class="fa fa-inr"></i> 65,500/-</strong>
-                                    </p>
-                                    <p>
-                                        <strong><i class="fa fa-inr"></i> 500/-</strong>
-                                    </p>
-                                    <p>
-                                        <strong><i class="fa fa-inr"></i> 1300/-</strong>
-                                    </p>
-                                    <p>
-                                        <strong><i class="fa fa-inr"></i> 9500/-</strong>
-                                    </p>
-                                </td>
+                                <td class="text-right"><strong>Total Amount: </strong></td>
+                                <td><i class="fa fa-inr"></i> {{ number_format($total, 2) }}</td>
                             </tr>
                             <tr>
-
+                                <td class="text-right"><strong>Discount: </strong></td>
+                                <td><i class="fa fa-inr"></i> {{ number_format($discount, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-right"><strong>PPN 11%: </strong></td>
+                                <td><i class="fa fa-inr"></i> {{ number_format($tax, 2) }}</td>
+                            </tr>
+                            <tr>
                                 <td class="text-right">
                                     <h2><strong>Total: </strong></h2>
                                 </td>
                                 <td class="text-left text-danger">
-                                    <h2><strong><i class="fa fa-inr"></i> 31.566/-</strong></h2>
+                                    <h2><strong><i class="fa fa-inr"></i> {{ number_format($payable, 2) }}</strong></h2>
                                 </td>
                             </tr>
                         </tbody>
@@ -215,7 +211,7 @@
                     <div class="receipt-header receipt-header-mid receipt-footer">
                         <div class="col-xs-8 col-sm-8 col-md-8 text-left">
                             <div class="receipt-right">
-                                <p><b>Date :</b> 15 Aug 2016</p>
+                                <p><b>Date :</b> {{ date('d M Y') }}</p>
                                 <h5 style="color: rgb(140, 140, 140);">Thanks for shopping.!</h5>
                             </div>
                         </div>
@@ -227,6 +223,7 @@
                     </div>
                 </div>
 
+
             </div>
         </div>
     </div>
@@ -236,6 +233,4 @@
     <script>
         window.addEventListener("load", window.print());
     </script>
-    
-    
 @endpush

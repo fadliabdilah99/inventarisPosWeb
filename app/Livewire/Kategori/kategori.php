@@ -13,7 +13,7 @@ class Kategori extends Component
 
     #[Title('Kategori')]
 
-    public $kategori, $id;
+    public $kategori, $kategoriId;
 
     protected $rules = [
         'kategori' => 'required'
@@ -32,6 +32,25 @@ class Kategori extends Component
             'kategori' => $this->kategori
         ]);
         $this->resetForm();
+        session()->flash('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    public function update()
+    {
+        $this->validate();
+        ModelsKategori::find($this->kategoriId)->update([
+            'kategori' => $this->kategori
+        ]);
+        $this->resetForm();
+        session()->flash('success', 'Kategori berhasil diubah.');
+
+    }
+
+    public function delete()
+    {
+        ModelsKategori::find($this->kategoriId)->delete();
+        $this->resetForm();
+        session()->flash('success', 'Kategori berhasil dihapus.');
     }
 
 

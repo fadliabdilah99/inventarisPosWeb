@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tgl_masuk');
             $table->integer('harga_modal');
             $table->integer('qty');
-            $table->string('satuan');
+            $table->string('satuan')->nullable();
             $table->timestamps();
         });
     }

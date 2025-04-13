@@ -68,6 +68,13 @@
                     </div>
                 </div>
 
+                @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+
                 <div class="table-responsive">
                     <table id="add-row" class="display table table-striped table-hover">
                         <thead>
@@ -93,9 +100,12 @@
                                                 <i class="fa fa-edit"></i>
                                             </button>
                                             <button type="button" data-bs-toggle="tooltip" title=""
-                                                class="btn btn-link btn-danger" data-original-title="Remove">
+                                                class="btn btn-link btn-danger"
+                                                onclick="return confirmRemove({{ $kategori->id }})"
+                                                data-original-title="Remove">
                                                 <i class="fa fa-times"></i>
                                             </button>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -112,6 +122,7 @@
     {{-- //   <!-- Datatables --> --}}
     <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
     <script>
+        console.log('test');
         $("#add-row").DataTable({
             pageLength: 5,
         });
@@ -128,5 +139,46 @@
                 ]);
             $("#addRowModal").modal("hide");
         });
+    </script>
+    <script>
+        function confirmRemove(id) {
+            return swal({
+                title: "Apakah kamu yakin?",
+                text: "Kamu akan menghapus kategori ini!",
+                type: "warning",
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        text: "tidak!",
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Ya, Hapus!",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    @this.set('kategoriId', id);
+                    @this.call('delete');
+                    swal("Poof! Your imaginary file has been deleted!", {
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-success",
+                            },
+                        },
+                    });
+                } else {
+                    swal("Your imaginary file is safe!", {
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-success",
+                            },
+                        },
+                    });
+                }
+            });
+        }
     </script>
 @endpush

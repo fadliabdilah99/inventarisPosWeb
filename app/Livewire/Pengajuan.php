@@ -43,13 +43,23 @@ class Pengajuan extends Component
         $this->validate();
 
         // menambahkan pengajuan kedalam database
-        ModelsPengajuan::create([
-            'user_id' => Auth::id(),
-            'nama_barang' => $this->nama_barang,
-            'tgl_pengajuan' => now(),
-            'qty' => $this->qty,
-            'status' => 0,
-        ]);
+        try {
+            ModelsPengajuan::create([
+                'user_id' => Auth::id(),
+                'nama_barang' => $this->nama_barang,
+                'tgl_pengajuan' => now(),
+                'qty' => $this->qty,
+                'status' => 0,
+            ]);
+
+            // kosongkan form
+            $this->resetForm();
+
+            session()->flash('success', 'Pengajuan berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            Log::error("Error menambahkan pengajuan: " . $e->getMessage());
+            session()->flash('error', 'Terjadi kesalahan saat menambahkan pengajuan.');
+        }
 
         // kosongkan form
         $this->resetForm();

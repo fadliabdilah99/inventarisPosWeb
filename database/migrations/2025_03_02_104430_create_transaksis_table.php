@@ -16,8 +16,8 @@ return new class extends Migration
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('kasir_id');
             $table->bigInteger('voucher_id')->nullable();
-            $table->string('total');
-            $table->string('koin');
+            $table->string('total')->nullable();
+            $table->string('koin')->nullable();
             $table->timestamps();
         });
     }

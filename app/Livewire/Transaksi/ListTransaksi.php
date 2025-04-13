@@ -18,6 +18,7 @@ class ListTransaksi extends Component
     public $total = 0;
     public $discount  = 0;
     public $selectedMember;
+    public $uang_bayar = 0;
 
     public function mount($id)
     {

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\barang_masuk;
+use App\Models\pengajuan;
 use App\Models\transaksi;
 use App\Models\User;
 use Illuminate\Container\Attributes\DB;
@@ -38,7 +39,9 @@ class Dashboard extends Component
         $data['total_transaksi'] = json_encode($total_transaksi); // Ubah ke JSON
         $data['labels'] = json_encode(range(1, $totalDay)); // Label tanggal dari 1 sampai akhir bulan
 
+        $data['pemasukanBulan'] = transaksi::whereMonth('created_at', date('m'))->sum('total');
 
+        $data['transaksis'] = transaksi::all();
         $data['member'] = User::where('role', 'member')->count();
         $data['valuasi'] = barang_masuk::sum(FacadesDB::raw('stok * harga_modal'));
         $data['pemasukan'] = transaksi::sum('total');

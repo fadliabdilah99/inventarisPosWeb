@@ -9,6 +9,9 @@ use App\Livewire\Barang\Struk;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;
 use App\Livewire\Kategori\kategori;
+use App\Livewire\Laporan\BarangmasukLaporan;
+use App\Livewire\Laporan\PenjualanLaporan;
+use App\Livewire\Laporan\ProdukLaporan;
 use App\Livewire\Pengajuan;
 use App\Livewire\Transaksi\ListTransaksi;
 use App\Livewire\Transaksi\Penjualan;
@@ -83,4 +86,12 @@ Route::group(['middleware' => ['role:admin,kasir']], function () {
 // pengajuan
 Route::group(['middleware' => ['role:admin,gudang,member']], function () {
     Route::get('pengajuan', Pengajuan::class)->name('pengajuan');
+});
+
+
+// laporan
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('laporan/penjualan', PenjualanLaporan::class)->name('laporan-penjualan');
+    Route::get('laporan/produk', ProdukLaporan::class)->name('laporan-produk');
+    Route::get('laporan/barangMasuk', BarangmasukLaporan::class)->name('laporan-barangMasuk');
 });

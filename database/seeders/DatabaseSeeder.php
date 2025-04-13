@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $this->call([
-            kategoriSeeder::class
-        ]);
+        // $this->call([
+        //     kategoriSeeder::class
+        // ]);
         
         // produk::factory()->count(50)->create();
         // $this->call([
@@ -26,29 +26,29 @@ class DatabaseSeeder extends Seeder
         // ]);
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'admin',
-        //     'email' => 'admin@admin.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'admin',
-        // ]);
-        // User::factory()->create([
-        //     'name' => 'kasir',
-        //     'email' => 'kasir@kasir.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'kasir',
-        // ]);
-        // User::factory()->create([
-        //     'name' => 'member',
-        //     'email' => 'member@member.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'member',
-        // ]);
-        // User::factory()->create([
-        //     'name' => 'gudang',
-        //     'email' => 'gudang@gudang.com',
-        //     'password' => Hash::make('password'),
-        //     'role' => 'gudang',
-        // ]);
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        User::factory()->create([
+            'name' => 'kasir',
+            'email' => 'kasir@kasir.com',
+            'password' => Hash::make('password'),
+            'role' => 'kasir',
+        ]);
+        User::factory()->create([
+            'name' => 'member',
+            'email' => 'member@member.com',
+            'password' => Hash::make('password'),
+            'role' => 'member',
+        ]);
+        User::factory()->create([
+            'name' => 'gudang',
+            'email' => 'gudang@gudang.com',
+            'password' => Hash::make('password'),
+            'role' => 'gudang',
+        ]);
     }
 }

@@ -104,13 +104,39 @@
                             </li>
                         @endif
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'member')
+                            <li class="nav-item">
+                                <a href="{{ route('pengajuan') }}" wire:navigate>
+                                    <i class="fas fa-envelope"></i>
+                                    <p>Pengajuan Barang</p>
+                                    {{-- <span class="badge badge-success">4</span> --}}
+                                </a>
+                            </li>
                         @endif
                         <li class="nav-item">
-                            <a href="{{ route('pengajuan') }}" wire:navigate>
-                                <i class="fas fa-envelope"></i>
-                                <p>Pengajuan Barang</p>
-                                {{-- <span class="badge badge-success">4</span> --}}
+                            <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                                <i class="fas fa-th-list"></i>
+                                <p>Laporan</p>
+                                <span class="caret"></span>
                             </a>
+                            <div class="collapse" id="sidebarLayouts">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="{{ route('laporan-penjualan') }}" wire:navigate>
+                                            <span class="sub-item">Penjualan</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('laporan-produk') }}" wire:navigate>
+                                            <span class="sub-item">produk</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('laporan-barangMasuk') }}" wire:navigate>
+                                            <span class="sub-item">Barang Masuk</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -630,6 +656,7 @@
             },
         });
     </script>
+
     @stack('scripts')
 
 </body>
