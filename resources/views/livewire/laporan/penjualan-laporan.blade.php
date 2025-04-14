@@ -27,7 +27,22 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Basic</h4>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Filter</h4>
+                                <form wire:submit.prevent="filter" class="d-flex">
+                                    <div class="form-group me-2">
+                                        <label for="from_date" class="visually-hidden">Dari Tanggal</label>
+                                        <input type="date" id="from_date" wire:model="from_date" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="form-group me-2">
+                                        <label for="to_date" class="visually-hidden">Sampai Tanggal</label>
+                                        <input type="date" id="to_date" wire:model="to_date" class="form-control"
+                                            required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </form>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -39,6 +54,7 @@
                                             <th>total item</th>
                                             <th>total transaksi</th>
                                             <th>Status</th>
+                                            <th>Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -48,19 +64,19 @@
                                             <th>total item</th>
                                             <th>total transaksi</th>
                                             <th>Status</th>
+                                            <th>Tanggal</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach ($penjualan as $item)
+                                        @foreach ($penjualan as $penjualans)
                                             <tr>
-                                            <tr>
-                                                <td>{{ $history->user_id ? $history->user->name : 'Pelanggan Umum' }}
+                                                <td>{{ $penjualans->user_id ? $penjualans->user->name : 'Pelanggan Umum' }}
                                                 </td>
                                                 <td>test</td>
-                                                <td>{{ $history->item->count() }}</td>
-                                                <td>{{ $history->total }}</td>
-                                                <td>{{ $history->status }}</td>
-                                            </tr>
+                                                <td>{{ $penjualans->item->count() }}</td>
+                                                <td>{{ $penjualans->total }}</td>
+                                                <td>{{ $penjualans->status }}</td>
+                                                <td>{{ $penjualans->created_at->format('Y-m-d') }}</td>
                                             </tr>
                                         @endforeach
 
