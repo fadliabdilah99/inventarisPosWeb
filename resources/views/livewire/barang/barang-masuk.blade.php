@@ -55,9 +55,25 @@
     <div class="col-md-9">
         <div class="card">
             <div class="card-header">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title">History Barang Masuk</h4>
+                @if (session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="card-title">History Barang Masuk</h4>
+                    <div class="d-flex">
+                        <form wire:submit.prevent="import" class="me-2">
+                            <input type="file" wire:model="file" class="form-control">
+                            @error('file')
+                                <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                            <button type="submit" class="btn btn-primary btn-sm">Import</button>
+                            <button wire:click="export" type="button" class="btn btn-success btn-sm">Export</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -97,13 +113,11 @@
                                     <td>
                                         <div class="form-button-action">
                                             <button type="button" data-bs-toggle="tooltip" title=""
-                                                class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button type="button" data-bs-toggle="tooltip" title=""
-                                                class="btn btn-link btn-danger" data-original-title="Remove">
+                                                class="btn btn-link btn-danger"
+                                                onclick="return confirmRemove({{ $history->id }})">
                                                 <i class="fa fa-times"></i>
                                             </button>
+
                                         </div>
                                     </td>
                             @endforeach
@@ -146,6 +160,34 @@
 </div>
 
 @push('scripts')
+    <script>
+        function confirmRemove(id) {
+            swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                buttons: {
+                    confirm: {
+                        text: "Yes, delete it!",
+                        className: "btn btn-success",
+                    },
+                    cancel: {
+                        visible: true,
+                        className: "btn btn-danger",
+                    },
+                },
+            }).then((Delete) => {
+                if (Delete) {
+                    @this.call('destroy', id);
+                } else {
+                    swal.close();
+                }
+            });
+            return false;
+        }
+    </script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('preview');

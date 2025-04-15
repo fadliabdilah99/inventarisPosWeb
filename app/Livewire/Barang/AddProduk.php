@@ -41,7 +41,7 @@ class AddProduk extends Component
 
     public function store()
     {
-        if(empty($this->discount)){
+        if (empty($this->discount)) {
             $this->discount = 0;
         }
         try {
@@ -54,6 +54,7 @@ class AddProduk extends Component
                 'margin' => $this->margin,
                 'discount' => $this->discount
             ]);
+            session()->flash('success', 'Produk berhasil ditambahkan');
             return redirect('produk')->with('');
         } catch (\Exception $e) {
             // You can log the error or handle it as needed
@@ -69,6 +70,12 @@ class AddProduk extends Component
             $produk->$field = $value;
             $produk->save();
         }
+        session()->flash('success', 'Produk berhasil ditambahkan');
+    }
+
+    public function destroy($id){
+        produk::where('id', $id)->delete();
+        session()->flash('success', 'Produk berhasil dihapus!');
     }
 
     public function render()

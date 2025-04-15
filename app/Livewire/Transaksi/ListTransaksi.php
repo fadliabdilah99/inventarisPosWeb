@@ -6,6 +6,7 @@ use App\Models\produk;
 use App\Models\transaksi;
 use App\Models\transaksi_item;
 use App\Models\User;
+use App\Services\ServiceThermal;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -33,14 +34,13 @@ class ListTransaksi extends Component
     public function addlist()
     {
         $produk = produk::where('kode', $this->produk_id)->first();
-        if ($produk == null) {
-            return redirect('list-transaksi/' . $this->id)->with('error', 'Produk tidak ditemukan');
+        if ($produk == null || $produk->stok <= 0) {
+            return redirect('list-transaksi/' . $this->id)->with('error', 'Produk tidak ditemukan atau stok habis');
         }
         $list = transaksi_item::where('transaksi_id', $this->id)->where('produk_id', $produk->id)->first();
         if ($list != null) {
             $list->qty += 1;
             $list->save();
-            // return redirect()->route('list-transaksi', $this->id);
         } else {
             transaksi_item::create([
                 'transaksi_id' => $this->id,
@@ -95,7 +95,10 @@ class ListTransaksi extends Component
         $transaksi->total = $totals;
         $transaksi->save();
 
-        return redirect()->route('invoice', $this->id);
+        $thermal = new ServiceThermal();
+        $thermal->cetakStruk($transaksi);
+    
+        // return redirect()->route('invoice', $this->id);
     }
 
     public function updateList($id, $field, $value)

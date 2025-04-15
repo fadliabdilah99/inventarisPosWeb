@@ -23,34 +23,35 @@ class KategoriTest extends TestCase
         $this->assertDatabaseHas('kategoris', [
             'kategori' => 'kategori baru',
         ]);
+        // $this->assertSessionHas('success', 'Kategori berhasil ditambahkan.');
     }
 
-    // public function testUpdateSuccessfully()
-    // {
-    //     // update kategori yang ada
-    //     $kategori = ModelsKategori::factory()->create(['kategori' => 'kategori lama']);
-    //     Livewire::test('kategori.index')
-    //         ->set('kategoriId', $kategori->id) // set id kategori
-    //         ->set('kategori', 'kategori baru') // set kategori baru
-    //         ->call('update') // panggil fungsi update
-    //         ->skipRender()
-    //         ->assertRedirect('/kategori') // assert redirect ke halaman kategori
-    //         ->assertDatabaseHas('kategori', [ // assert database memiliki data kategori
-    //             'kategori' => 'kategori baru',
-    //         ]);
-    // }
+    public function testUpdateSuccessfully()
+    {
+        // update kategori yang sudah ada
+        $kategori = ModelsKategori::factory()->create(['kategori' => 'kategori lama']);
+        Livewire::test(Kategori::class)
+            ->set('kategoriId', $kategori->id) // set id kategori
+            ->set('kategori', 'kategori baru') // set kategori baru
+            ->call('updateKategori', $kategori->id, 'kategori baru'); // panggil fungsi updateKategori
+        $this->assertDatabaseHas('kategoris', [
+            'id' => $kategori->id,
+            'kategori' => 'kategori baru',
+        ]);
+        // $this->assertSessionHas('success', 'Produk berhasil update');
+    }
 
-    // public function testDeleteSuccessfully()
-    // {
-    //     // delete kategori yang ada
-    //     $kategori = ModelsKategori::factory()->create(['kategori' => 'kategori lama']);
-    //     Livewire::test('kategori.index')
-    //         ->set('kategoriId', $kategori->id) // set id kategori
-    //         ->call('delete') // panggil fungsi delete
-    //         ->skipRender()
-    //         ->assertRedirect('/kategori') // assert redirect ke halaman kategori
-    //         ->assertDatabaseMissing('kategori', [ // assert database tidak memiliki data kategori
-    //             'kategori' => 'kategori lama',
-    //         ]);
-    // }
+    public function testDeleteSuccessfully()
+    {
+        // delete kategori yang sudah ada
+        $kategori = ModelsKategori::factory()->create(['kategori' => 'kategori lama']);
+        Livewire::test(Kategori::class)
+            ->set('kategoriId', $kategori->id) // set id kategori
+            ->call('delete'); // panggil fungsi delete
+        $this->assertDatabaseMissing('kategoris', [
+            'id' => $kategori->id,
+            'kategori' => 'kategori lama',
+        ]);
+        // $this->assertSessionHas('success', 'Kategori berhasil dihapus.');
+    }
 }

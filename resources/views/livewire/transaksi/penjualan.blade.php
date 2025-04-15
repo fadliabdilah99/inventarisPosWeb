@@ -36,7 +36,6 @@
                                 <th>total item</th>
                                 <th>total transaksi</th>
                                 <th>Status</th>
-                                <th style="width: 10%">Action</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -46,7 +45,6 @@
                                 <th>total item</th>
                                 <th>total transaksi</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -57,14 +55,6 @@
                                     <td>{{ $history->item->count() }}</td>
                                     <td>{{ $history->total }}</td>
                                     <td>{{ $history->status }}</td>
-                                    <td>
-                                        <div class="form-button-action">
-                                            <a href="{{ route('invoice', $history->id) }}" wire:navigate type="button" data-bs-toggle="tooltip" title=""
-                                                class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        </div>
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

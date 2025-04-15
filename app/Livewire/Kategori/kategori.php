@@ -3,6 +3,7 @@
 namespace App\Livewire\Kategori;
 
 use App\Models\kategori as ModelsKategori;
+use App\Models\produk;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -35,21 +36,22 @@ class Kategori extends Component
         session()->flash('success', 'Kategori berhasil ditambahkan.');
     }
 
-    public function update()
+    public function updateKategori($id, $value)
     {
-        $this->validate();
-        ModelsKategori::find($this->kategoriId)->update([
-            'kategori' => $this->kategori
-        ]);
-        $this->resetForm();
-        session()->flash('success', 'Kategori berhasil diubah.');
-
+        // dd($value);
+        $kategorri = ModelsKategori::find($id);
+        if ($kategorri) {
+            $kategorri->kategori = $value;
+            $kategorri->save();
+        }
+        session()->flash('success', 'Produk berhasil update');
     }
 
     public function delete()
     {
-        ModelsKategori::find($this->kategoriId)->delete();
-        $this->resetForm();
+        $kategori = ModelsKategori::find($this->kategoriId);
+        produk::where('kategori_id', $kategori->id)->update(['kategori_id' => null]);
+        $kategori->delete();
         session()->flash('success', 'Kategori berhasil dihapus.');
     }
 

@@ -70,7 +70,7 @@ Route::group(['middleware' => ['role:admin,gudang']], function () {
     // daftarkan barang
     Route::get('produk', AddProduk::class)->name('produk');
     // barang masuk
-    Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
+Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
 });
 
 Route::group(['middleware' => ['role:admin,kasir']], function () {

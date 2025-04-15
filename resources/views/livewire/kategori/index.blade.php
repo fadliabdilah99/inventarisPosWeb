@@ -90,15 +90,17 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @foreach ($kategoris as $kategori)
+                            @foreach ($kategoris as $index => $kategori)
                                 <tr>
-                                    <td>{{ $kategori->kategori }}</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <input type="text" class="form-control" value="{{ $kategori->kategori }}"
+                                                wire:model.lazy="kategoris.{{ $index }}.kategori"
+                                                wire:change="updateKategori({{ $kategori->id }}, $event.target.value)">
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="form-button-action">
-                                            <button type="button" data-bs-toggle="tooltip" title=""
-                                                class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
                                             <button type="button" data-bs-toggle="tooltip" title=""
                                                 class="btn btn-link btn-danger"
                                                 onclick="return confirmRemove({{ $kategori->id }})"

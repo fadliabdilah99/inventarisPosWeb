@@ -18,6 +18,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
+                    @if (session()->has('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <div class="d-flex align-items-center">
                         <h4 class="card-title">Produk</h4>
                         <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
@@ -83,7 +91,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="email2">Margin</label>
+                                                        <label for="email2">Harga Jual</label>
                                                         <input type="number" wire:model="margin" class="form-control"
                                                             placeholder="Rp ...">
                                                     </div>
@@ -122,9 +130,24 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <span
-                                                    class="text-muted text-ms mt-1">{{ $prod->kategori->kategori . ' / ' . $prod->kode }}</span>
-                                                <input type="text" class="form-control" value="{{ $prod->produk }}"
+                                                <span class="text-muted text-ms mt-1">
+                                                    @if ($prod->kategori)
+                                                        {{ $prod->kategori->kategori . ' / ' . $prod->kode }}
+                                                    @else
+                                                        <select class="form-select"
+                                                            wire:model.lazy="produks.{{ $index }}.kategori_id"
+                                                            wire:change="updateProduk({{ $prod->id }}, 'kategori_id', $event.target.value)">
+                                                            <option value="" selected>Pilih Kategori</option>
+                                                            @foreach ($kategoris as $kategori)
+                                                                <option value="{{ $kategori->id }}">
+                                                                    {{ $kategori->kategori }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
+                                                </span>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $prod->produk }}"
                                                     wire:model.lazy="produks.{{ $index }}.produk"
                                                     wire:change="updateProduk({{ $prod->id }}, 'produk', $event.target.value)">
                                             </div>
@@ -135,28 +158,28 @@
                                         </td>
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <input type="number" class="form-control" value="{{ $prod->margin }}"
+                                                <input type="number" class="form-control"
+                                                    value="{{ $prod->margin }}"
                                                     wire:model.lazy="produks.{{ $index }}.margin"
                                                     wire:change="updateProduk({{ $prod->id }}, 'margin', $event.target.value)">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <input type="number" class="form-control" value="{{ $prod->discount }}"
+                                                <input type="number" class="form-control"
+                                                    value="{{ $prod->discount }}"
                                                     wire:model.lazy="produks.{{ $index }}.discount"
                                                     wire:change="updateProduk({{ $prod->id }}, 'discount', $event.target.value)">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-button-action">
-                                                <button type="button" data-bs-toggle="tooltip"
-                                                    class="btn btn-link btn-primary btn-lg" title="Edit Task">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button type="button" data-bs-toggle="tooltip"
-                                                    class="btn btn-link btn-danger" title="Remove">
+                                                <button type="button" class="btn btn-link btn-danger"
+                                                    onclick="confirmRemove({{ $prod->id }})">
                                                     <i class="fa fa-times"></i>
                                                 </button>
+
+
                                             </div>
                                         </td>
                                     </tr>
@@ -176,7 +199,6 @@
     {{-- //   <!-- Datatables --> --}}
     <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
     <script>
-
         $("#addRowButton").click(function() {
             $("#add-row")
                 .dataTable()
@@ -186,5 +208,31 @@
                 ]);
             $("#addRowModal").modal("hide");
         });
+    </script>
+
+    <script>
+        function confirmRemove(id) {
+            swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                buttons: {
+                    confirm: {
+                        text: "Yes, delete it!",
+                        className: "btn btn-success",
+                    },
+                    cancel: {
+                        visible: true,
+                        className: "btn btn-danger",
+                    },
+                },
+            }).then((Delete) => {
+                if (Delete) {
+                    @this.call('destroy', id);
+                } else {
+                    swal.close();
+                }
+            });
+        }
     </script>
 @endpush
