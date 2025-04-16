@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transaksis', function (Blueprint $table) {
-            $table->string('status')->default('pending');
+        Schema::create('karyawans', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('password');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transaksis', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('karyawans');
     }
 };

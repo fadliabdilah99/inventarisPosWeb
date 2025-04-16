@@ -9,19 +9,68 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+/**
+ * @brief Class AddProduk
+ *
+ * Class ini digunakan untuk menambahkan produk baru
+ */
 #[Layout('layouts.master')]
 class AddProduk extends Component
 {
     #[Title('Tambah Produk')]
 
-    public $kode, $produk, $kat, $satuan, $margin, $discount;
+    /**
+     * @brief kode produk
+     * @var string
+     */
+    public $kode;
+
+    /**
+     * @brief nama produk
+     * @var string
+     */
+    public $produk;
+
+    /**
+     * @brief kategori produk
+     * @var string
+     */
+    public $kat;
+
+    /**
+     * @brief satuan produk
+     * @var string
+     */
+    public $satuan;
+
+    /**
+     * @brief margin produk
+     * @var string
+     */
+    public $margin;
+
+    /**
+     * @brief diskon produk
+     * @var string
+     */
+    public $discount;
 
 
+    /**
+     * @brief Mount method
+     *
+     * Method ini digunakan untuk mengatur nilai awal dari kode
+     */
     public function mount()
     {
         $this->kode = session('kode', '');
     }
 
+    /**
+     * @brief Rule validation
+     *
+     * Rule ini digunakan untuk memvalidasi inputan user
+     */
     protected $rules = [
         'kode' => 'required',
         'kat' => 'required',
@@ -29,6 +78,11 @@ class AddProduk extends Component
         'margin' => 'required',
     ];
 
+    /**
+     * @brief Reset form
+     *
+     * Method ini digunakan untuk mengatur nilai awal dari form
+     */
     public function resetForm()
     {
         $this->kode = '';
@@ -39,6 +93,11 @@ class AddProduk extends Component
         $this->discount = '';
     }
 
+    /**
+     * @brief Store method
+     *
+     * Method ini digunakan untuk menyimpan data produk ke database
+     */
     public function store()
     {
         if (empty($this->discount)) {
@@ -63,6 +122,15 @@ class AddProduk extends Component
         }
     }
 
+    /**
+     * @brief Update produk method
+     *
+     * Method ini digunakan untuk mengupdate data produk
+     *
+     * @param int $id id produk
+     * @param string $field nama field yang akan diupdate
+     * @param string $value nilai yang akan diupdate
+     */
     public function updateProduk($id, $field, $value)
     {
         $produk = Produk::find($id);
@@ -73,11 +141,26 @@ class AddProduk extends Component
         session()->flash('success', 'Produk berhasil ditambahkan');
     }
 
-    public function destroy($id){
+    /**
+     * @brief Hapus produk method
+     *
+     * Method ini digunakan untuk menghapus data produk
+     *
+     * @param int $id id produk
+     */
+    public function destroy($id)
+    {
         produk::where('id', $id)->delete();
         session()->flash('success', 'Produk berhasil dihapus!');
     }
 
+    /**
+     * @brief Render method
+     *
+     * Method ini digunakan untuk mengrender view
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         $data['kategoris'] = kategori::all();

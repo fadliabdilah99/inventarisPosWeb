@@ -112,6 +112,7 @@
                                 </a>
                             </li>
                         @endif
+
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarLayouts">
                                 <i class="fas fa-th-list"></i>
@@ -137,6 +138,24 @@
                                     </li>
                                 </ul>
                             </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ Auth::user()->role == 'admin' ? route('absensi') : route('check-absen') }}" wire:navigate>
+                                <i class="fas fa-clock"></i>
+                                <p>Absensi</p>
+                                {{-- <span class="badge badge-success">4</span> --}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -405,7 +424,7 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="fw-bold">{{Auth::user()->name}}</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -417,7 +436,7 @@
                                                         class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Hizrian</h4>
+                                                    <h4>{{Auth::user()->name}}</h4>
                                                     <p class="text-muted">hello@example.com</p>
                                                     <a href="profile.html"
                                                         class="btn btn-xs btn-secondary btn-sm">View Profile</a>

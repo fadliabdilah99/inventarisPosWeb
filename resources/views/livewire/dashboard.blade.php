@@ -142,7 +142,7 @@
                         </div>
                         <div class="card-body pb-0">
                             <div class="mb-4 mt-2">
-                                <h1>Rp {{number_format($pemasukanBulan)}}</h1>
+                                <h1>Rp {{ number_format($pemasukanBulan) }}</h1>
                             </div>
                             <div class="pull-in">
                                 <canvas id="dailySalesChart"></canvas>
@@ -156,7 +156,7 @@
                     <div class="card card-round">
                         <div class="card-body">
                             <div class="card-head-row card-tools-still-right">
-                                <div class="card-title">New Customers</div>
+                                <div class="card-title">Karyawan Masuk Hari ini</div>
                                 <div class="card-tools">
                                     <div class="dropdown">
                                         <button class="btn btn-icon btn-clean me-0" type="button"
@@ -173,101 +173,19 @@
                                 </div>
                             </div>
                             <div class="card-list py-4">
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <img src="assets/img/jm_denis.jpg" alt="..."
-                                            class="avatar-img rounded-circle" />
+                                @foreach ($karyawanMasuk as $karyawans)
+                                    <div class="item-list">
+                                        <div class="avatar">
+                                            <img src="assets/img/jm_denis.jpg" alt="..."
+                                                class="avatar-img rounded-circle" />
+                                        </div>
+                                        <div class="info-user ms-3">
+                                            <div class="username">{{ $karyawans->name }}</div>
+                                            <div class="status">Masuk : {{ $karyawans->absensi[0]->waktu_masuk }}</div>
+                                            <div class="status">Keluar : {{ $karyawans->absensi[0]->waktu_keluar }}</div>
+                                        </div>
                                     </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Jimmy Denis</div>
-                                        <div class="status">Graphic Designer</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <span class="avatar-title rounded-circle border border-white">CF</span>
-                                    </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Chandra Felix</div>
-                                        <div class="status">Sales Promotion</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <img src="assets/img/talha.jpg" alt="..."
-                                            class="avatar-img rounded-circle" />
-                                    </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Talha</div>
-                                        <div class="status">Front End Designer</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <img src="assets/img/chadengle.jpg" alt="..."
-                                            class="avatar-img rounded-circle" />
-                                    </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Chad</div>
-                                        <div class="status">CEO Zeleaf</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <span
-                                            class="avatar-title rounded-circle border border-white bg-primary">H</span>
-                                    </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Hizrian</div>
-                                        <div class="status">Web Designer</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                                <div class="item-list">
-                                    <div class="avatar">
-                                        <span
-                                            class="avatar-title rounded-circle border border-white bg-secondary">F</span>
-                                    </div>
-                                    <div class="info-user ms-3">
-                                        <div class="username">Farrah</div>
-                                        <div class="status">Marketing</div>
-                                    </div>
-                                    <button class="btn btn-icon btn-link op-8 me-1">
-                                        <i class="far fa-envelope"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-link btn-danger op-8">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

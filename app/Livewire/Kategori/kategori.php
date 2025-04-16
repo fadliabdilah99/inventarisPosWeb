@@ -37,7 +37,7 @@ class Kategori extends Component
     }
 
     public function updateKategori($id, $value)
-    {
+    {   
         // dd($value);
         $kategorri = ModelsKategori::find($id);
         if ($kategorri) {

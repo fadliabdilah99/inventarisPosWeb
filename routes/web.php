@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\exportPdf;
+use App\Livewire\Absensi\Absensi;
 use App\Livewire\Barang\AddProduk;
 use App\Livewire\Barang\BarangMasuk;
 use App\Livewire\Barang\Struk;
+use App\Livewire\CheckAbsen;
 use App\Livewire\Dashboard;
 use App\Livewire\Kategori\Index;
 use App\Livewire\Kategori\kategori;
@@ -18,6 +22,7 @@ use App\Livewire\Transaksi\Penjualan;
 use App\Models\barang_masuk;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use Maatwebsite\Excel\Row;
 
 Route::get('/', function () {
     return redirect('login');
@@ -70,7 +75,7 @@ Route::group(['middleware' => ['role:admin,gudang']], function () {
     // daftarkan barang
     Route::get('produk', AddProduk::class)->name('produk');
     // barang masuk
-Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
+    Route::get('barang-masuk', BarangMasuk::class)->name('barang-masuk');
 });
 
 Route::group(['middleware' => ['role:admin,kasir']], function () {
@@ -91,7 +96,17 @@ Route::group(['middleware' => ['role:admin,gudang,member']], function () {
 
 // laporan
 Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('Absensi', Absensi::class)->name('absensi');
+
+
     Route::get('laporan/penjualan', PenjualanLaporan::class)->name('laporan-penjualan');
     Route::get('laporan/produk', ProdukLaporan::class)->name('laporan-produk');
     Route::get('laporan/barangMasuk', BarangmasukLaporan::class)->name('laporan-barangMasuk');
 });
+
+Route::get('/Absensi/export-pdf', [exportPdf::class, 'exportPdf'])->name('absensi.exportpdf');
+
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+Route::get('CheckAbsen', CheckAbsen::class)->name('check-absen');

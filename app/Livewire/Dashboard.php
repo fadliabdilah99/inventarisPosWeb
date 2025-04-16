@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\barang_masuk;
+use App\Models\Karyawan;
 use App\Models\pengajuan;
 use App\Models\transaksi;
 use App\Models\User;
@@ -26,6 +27,12 @@ class Dashboard extends Component
 
     public function render()
     {
+
+        $data['karyawanMasuk'] = Karyawan::whereHas('absensi', function ($query) {
+            $query->whereDate('created_at', now()->toDateString())->where('status', 'masuk');
+        })->get();
+
+
         $date = date('Y-m-d');
         $totalDay = date('t', strtotime($date));
 

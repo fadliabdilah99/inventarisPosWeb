@@ -11,4 +11,8 @@ class transaksi_item extends Model
     public function produk() {
         return $this->belongsTo(produk::class);
     }
+
+    public function transaksi() {
+        return $this->belongsTo(transaksi::class);
+    }
 }

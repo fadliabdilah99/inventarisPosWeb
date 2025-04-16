@@ -34,7 +34,8 @@ class ListTransaksi extends Component
     public function addlist()
     {
         $produk = produk::where('kode', $this->produk_id)->first();
-        if ($produk == null || $produk->stok <= 0) {
+        // dd($produk);
+        if ($produk == null || $produk->barang_masuk->sum('stok') <= 0) {
             return redirect('list-transaksi/' . $this->id)->with('error', 'Produk tidak ditemukan atau stok habis');
         }
         $list = transaksi_item::where('transaksi_id', $this->id)->where('produk_id', $produk->id)->first();
@@ -85,8 +86,8 @@ class ListTransaksi extends Component
 
         $transaksi->koin = floor($totals / 1000);
 
-        if($this->selectedMember != null){
-          User::where('nomor', $this->selectedMember)->update(['koin' => User::where('nomor', $this->selectedMember)->first()->point + $transaksi->koin]);
+        if ($this->selectedMember != null) {
+            User::where('nomor', $this->selectedMember)->update(['koin' => User::where('nomor', $this->selectedMember)->first()->point + $transaksi->koin]);
         }
 
 
@@ -97,7 +98,7 @@ class ListTransaksi extends Component
 
         $thermal = new ServiceThermal();
         $thermal->cetakStruk($transaksi);
-    
+
         // return redirect()->route('invoice', $this->id);
     }
 

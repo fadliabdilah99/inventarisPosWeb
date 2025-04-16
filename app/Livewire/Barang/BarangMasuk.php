@@ -62,7 +62,6 @@ class BarangMasuk extends Component
     }
 
 
-
     public function scanDetected()
     {
         $this->validate();

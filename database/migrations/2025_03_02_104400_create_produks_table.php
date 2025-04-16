@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('kategori_id')->nullable();
+            $table->string('kode')->after('id');
+            $table->string('satuan')->after('kategori_id');
             $table->string('produk');
             $table->string('margin');
             $table->string('discount');
